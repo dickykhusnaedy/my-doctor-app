@@ -9,6 +9,7 @@ import {
   RatedDoctor,
 } from '../../components';
 import {colors, fonts} from '../../utils';
+import {JSONCategoryDoctor} from '../../assets';
 
 const Doctor = () => {
   return (
@@ -26,10 +27,11 @@ const Doctor = () => {
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <View style={styles.doctorWrapper}>
                 <Gap width={32} />
-                <DoctorCategory />
-                <DoctorCategory />
-                <DoctorCategory />
-                <DoctorCategory />
+                {JSONCategoryDoctor.data.map((item) => {
+                  return (
+                    <DoctorCategory key={item.id} category={item.category} />
+                  );
+                })}
                 <Gap width={22} />
               </View>
             </ScrollView>

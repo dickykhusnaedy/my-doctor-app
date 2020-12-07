@@ -1,14 +1,34 @@
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {DummyCategoryDocter1} from '../../../assets';
+import {
+  DummyCategoryDocter1,
+  DummyCategoryDocter2,
+  DummyCategoryDocter3,
+  DummyCategoryDocter4,
+} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
-const DoctorCategory = () => {
+const DoctorCategory = ({category}) => {
+  const Icon = () => {
+    if (category === 'dokter umum') {
+      return <DummyCategoryDocter1 />;
+    }
+    if (category === 'psikiater') {
+      return <DummyCategoryDocter2 />;
+    }
+    if (category === 'dokter obat') {
+      return <DummyCategoryDocter3 />;
+    }
+    if (category === 'dokter anak') {
+      return <DummyCategoryDocter4 />;
+    }
+    return <DummyCategoryDocter1 />;
+  };
   return (
     <View style={styles.content}>
-      <DummyCategoryDocter1 />
+      <Icon />
       <Text style={styles.text1}>Saya butuh</Text>
-      <Text style={styles.text2}>dokter umum</Text>
+      <Text style={styles.text2}>{category}</Text>
     </View>
   );
 };
