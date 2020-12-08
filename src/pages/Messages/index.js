@@ -39,7 +39,7 @@ const Messages = () => {
               key={doctors.id}
               image={doctors.image}
               name={doctors.name}
-              chat={doctors.chat}
+              desc={doctors.chat}
             />
           );
         })}

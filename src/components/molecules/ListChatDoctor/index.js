@@ -1,16 +1,18 @@
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {IconNext} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
-const ListChatDoctor = ({image, name, chat}) => {
+const ListChatDoctor = ({image, name, desc, type, onPress}) => {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <Image source={image} style={styles.imageDoctor} />
-      <View>
+      <View style={styles.wrapperListChat}>
         <Text style={styles.nameDoctor}>{name}</Text>
-        <Text style={styles.chat}>{chat}</Text>
+        <Text style={styles.desc}>{desc}</Text>
       </View>
-    </View>
+      {type === 'dark' && <IconNext />}
+    </TouchableOpacity>
   );
 };
 
@@ -23,6 +25,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
+    justifyContent: 'space-between',
+  },
+  wrapperListChat: {
+    flex: 1,
   },
   imageDoctor: {
     width: 46,
@@ -35,7 +41,7 @@ const styles = StyleSheet.create({
     color: colors.text.primary,
     fontFamily: fonts.primary.normal,
   },
-  chat: {
+  desc: {
     fontSize: 12,
     color: colors.text.secondary,
     fontFamily: fonts.primary[300],

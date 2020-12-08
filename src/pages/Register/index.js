@@ -6,11 +6,7 @@ import {colors} from '../../utils';
 const Register = ({navigation}) => {
   return (
     <View style={styles.page}>
-      <Header
-        title="Daftar Akun"
-        icon="back-dark"
-        onPress={() => navigation.goBack()}
-      />
+      <Header title="Daftar Akun" onPress={() => navigation.goBack()} />
       <View style={styles.content}>
         <Input label="Full Name" />
         <Gap height={24} />

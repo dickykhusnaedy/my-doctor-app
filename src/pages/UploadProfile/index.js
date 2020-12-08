@@ -4,10 +4,14 @@ import {IconAddButton, IL_PhotoNull} from '../../assets';
 import {Button, Gap, Header, Link} from '../../components';
 import {colors, fonts} from '../../utils';
 
-const UploadProfile = () => {
+const UploadProfile = ({navigation}) => {
   return (
     <View style={styles.page}>
-      <Header title="Upload Photo" icon="back-dark" />
+      <Header
+        title="Upload Photo"
+        icon="back-dark"
+        onPress={() => navigation.goBack()}
+      />
       <View style={styles.content}>
         <View style={styles.topWrapper}>
           <View style={styles.profileWrapper}>

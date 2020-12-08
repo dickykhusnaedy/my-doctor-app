@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {
   DummyCategoryDocter1,
   DummyCategoryDocter2,
@@ -8,7 +8,7 @@ import {
 } from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
-const DoctorCategory = ({category}) => {
+const DoctorCategory = ({category, onPress}) => {
   const Icon = () => {
     if (category === 'dokter umum') {
       return <DummyCategoryDocter1 />;
@@ -25,11 +25,11 @@ const DoctorCategory = ({category}) => {
     return <DummyCategoryDocter1 />;
   };
   return (
-    <View style={styles.content}>
+    <TouchableOpacity style={styles.content} onPress={onPress}>
       <Icon />
       <Text style={styles.text1}>Saya butuh</Text>
       <Text style={styles.text2}>{category}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 
