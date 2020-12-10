@@ -1,22 +1,43 @@
 import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {IconNext} from '../../../assets';
+import {
+  IconHelp,
+  IconLanguage,
+  IconNext,
+  IconRate,
+  IconUser,
+} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
-const ListChatDoctor = ({image, name, desc, type, onPress}) => {
+const List = ({image, name, desc, type, onPress, icon}) => {
+  const Icon = () => {
+    if (icon === 'edit-profile') {
+      return <IconUser />;
+    }
+    if (icon === 'language') {
+      return <IconLanguage />;
+    }
+    if (icon === 'rate') {
+      return <IconRate />;
+    }
+    if (icon === 'help') {
+      return <IconHelp />;
+    }
+    return <IconUser />;
+  };
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
-      <Image source={image} style={styles.imageDoctor} />
+      {icon ? <Icon /> : <Image source={image} style={styles.imageDoctor} />}
       <View style={styles.wrapperListChat}>
         <Text style={styles.nameDoctor}>{name}</Text>
         <Text style={styles.desc}>{desc}</Text>
       </View>
-      {type === 'dark' && <IconNext />}
+      {type === 'next' && <IconNext />}
     </TouchableOpacity>
   );
 };
 
-export default ListChatDoctor;
+export default List;
 
 const styles = StyleSheet.create({
   container: {
@@ -29,11 +50,11 @@ const styles = StyleSheet.create({
   },
   wrapperListChat: {
     flex: 1,
+    marginLeft: 16,
   },
   imageDoctor: {
     width: 46,
     height: 46,
-    marginRight: 16,
     borderRadius: 46 / 2,
   },
   nameDoctor: {

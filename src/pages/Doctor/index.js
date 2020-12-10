@@ -9,7 +9,12 @@ import {
   RatedDoctor,
 } from '../../components';
 import {colors, fonts} from '../../utils';
-import {JSONCategoryDoctor} from '../../assets';
+import {
+  DummyImageDocter1,
+  DummyImageDocter2,
+  DummyImageDocter3,
+  JSONCategoryDoctor,
+} from '../../assets';
 
 const Doctor = ({navigation}) => {
   return (
@@ -18,7 +23,7 @@ const Doctor = ({navigation}) => {
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.wrapperSection}>
             <Gap height={30} />
-            <HomeProfile />
+            <HomeProfile onPress={() => navigation.navigate('UserProfile')} />
             <Text style={styles.welcome}>
               Mau konsultasi dengan siapa hari ini?
             </Text>
@@ -42,9 +47,24 @@ const Doctor = ({navigation}) => {
           </View>
           <View style={styles.wrapperSection}>
             <Text style={styles.labelName}>Top Rated Doctors</Text>
-            <RatedDoctor />
-            <RatedDoctor />
-            <RatedDoctor />
+            <RatedDoctor
+              avatar={DummyImageDocter1}
+              name="Alexa Rachel"
+              desc="Pediatrician"
+              onPress={() => navigation.navigate('DoctorProfile')}
+            />
+            <RatedDoctor
+              avatar={DummyImageDocter2}
+              name="Sunny Frank"
+              desc="Dentist"
+              onPress={() => navigation.navigate('DoctorProfile')}
+            />
+            <RatedDoctor
+              avatar={DummyImageDocter3}
+              name="Poe Minn"
+              desc="Podiatrist"
+              onPress={() => navigation.navigate('DoctorProfile')}
+            />
             <Text style={styles.labelName}>Good News</Text>
           </View>
           <GoodNews />

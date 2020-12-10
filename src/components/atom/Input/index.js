@@ -2,11 +2,11 @@ import React from 'react';
 import {StyleSheet, Text, View, TextInput} from 'react-native';
 import {colors, fonts} from '../../../utils';
 
-const Input = ({label}) => {
+const Input = ({label, placeholder}) => {
   return (
     <View>
       <Text style={styles.label}>{label}</Text>
-      <TextInput style={styles.input} />
+      <TextInput style={styles.input} placeholder={placeholder} />
     </View>
   );
 };

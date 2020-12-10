@@ -5,10 +5,10 @@ import {
   DummyImageDocter2,
   DummyImageDocter3,
 } from '../../assets';
-import {ListChatDoctor} from '../../components';
+import {List} from '../../components';
 import {colors, fonts} from '../../utils';
 
-const Messages = () => {
+const Messages = ({navigation}) => {
   const [doctor] = useState([
     {
       id: 1,
@@ -35,11 +35,12 @@ const Messages = () => {
         <Text style={styles.title}>Messages</Text>
         {doctor.map((doctors) => {
           return (
-            <ListChatDoctor
+            <List
               key={doctors.id}
               image={doctors.image}
               name={doctors.name}
               desc={doctors.chat}
+              onPress={() => navigation.navigate('Chatting')}
             />
           );
         })}

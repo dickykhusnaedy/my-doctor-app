@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import {StyleSheet, TextInput, View} from 'react-native';
 import {colors, fonts} from '../../../utils';
 import BtnIconSend from '../../atom/Button/BtnIconSend';
 
