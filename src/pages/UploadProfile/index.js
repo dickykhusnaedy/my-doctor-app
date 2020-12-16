@@ -1,10 +1,35 @@
-import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
-import {IconAddButton, IL_PhotoNull} from '../../assets';
+import React, {useState} from 'react';
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {showMessage} from 'react-native-flash-message';
+import {IconAddButton, IconRemovePhoto, IL_PhotoNull} from '../../assets';
 import {Button, Gap, Header, Link} from '../../components';
 import {colors, fonts} from '../../utils';
 
 const UploadProfile = ({navigation}) => {
+  const [hasPhoto, setHasPhoto] = useState(false);
+  const [photo, setPhoto] = useState(IL_PhotoNull);
+
+  const getImage = () => {
+    // Open Image Library:
+    launchImageLibrary({}, (response) => {
+      // Same code as in above section!
+      if (response.didCancel || response.error) {
+        showMessage({
+          message: 'Opps, sepertinya Anda tidak memilih foto',
+          type: 'default',
+          backgroundColor: colors.warning,
+          color: colors.white,
+        });
+      } else {
+        const source = {uri: response.uri};
+        setPhoto(source);
+        setHasPhoto(true);
+      }
+      console.log('response: ', response);
+    });
+  };
+
   return (
     <View style={styles.page}>
       <Header
@@ -14,15 +39,17 @@ const UploadProfile = ({navigation}) => {
       />
       <View style={styles.content}>
         <View style={styles.topWrapper}>
-          <View style={styles.profileWrapper}>
-            <Image source={IL_PhotoNull} style={styles.imgProfile} />
-            <IconAddButton style={styles.btnStyle} />
-          </View>
+          <TouchableOpacity style={styles.profileWrapper} onPress={getImage}>
+            <Image source={photo} style={styles.imgProfile} />
+            {!hasPhoto && <IconAddButton style={styles.btnStyle} />}
+            {hasPhoto && <IconRemovePhoto style={styles.btnStyle} />}
+          </TouchableOpacity>
           <Text style={styles.textTitle}>Shayna Melinda</Text>
           <Text style={styles.textSubTitle}>Product Designer</Text>
         </View>
         <View style={styles.bottomWrapper}>
           <Button
+            disable={!hasPhoto}
             title="Upload and Continue"
             onPress={() => navigation.replace('MainApp')}
           />
@@ -71,6 +98,7 @@ const styles = StyleSheet.create({
   imgProfile: {
     width: 110,
     height: 110,
+    borderRadius: 110 / 2,
   },
   btnStyle: {
     position: 'absolute',

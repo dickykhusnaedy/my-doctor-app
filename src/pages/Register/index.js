@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {showMessage, hideMessage} from 'react-native-flash-message';
+import {showMessage} from 'react-native-flash-message';
 import {Button, Gap, Header, Input, Loading} from '../../components';
-import {colors, fonts, useForm} from '../../utils';
 import {Firebase} from '../../config';
+import {colors, storeData, useForm} from '../../utils';
 
 const Register = ({navigation}) => {
   const [loading, setLoading] = useState(false);
@@ -20,7 +20,23 @@ const Register = ({navigation}) => {
       .createUserWithEmailAndPassword(form.email, form.password)
       .then((success) => {
         setLoading(false);
+        // data to be saved to firebase
+        const data = {
+          fullName: form.fullName,
+          profession: form.profession,
+          email: form.email,
+        };
+        // Save data to Realtime Database in Firebase
+        Firebase.database()
+          // root users (table name)
+          // success.user.uid to save data with the registered uid user
+          .ref('users' + success.user.uid + '/')
+          // save data to firebase
+          .set(data);
+        // Save data form to Local Storage Device
+        storeData('user', data);
         setForm('reset');
+        navigation.navigate('UploadProfile');
         console.log('Register success', success);
       })
       .catch((error) => {
@@ -34,6 +50,7 @@ const Register = ({navigation}) => {
         });
         console.log('Error registers: ', error);
       });
+    // console.log(form);
   };
 
   return (

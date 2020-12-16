@@ -7,16 +7,19 @@ const mainColors = {
   grey1: '#7D8797',
   grey2: '#E9E9E9',
   grey3: '#EDEEF0',
+  grey4: '#B1B7C2',
   blue1: '#0066CB',
   black1: '#000000',
   black2: 'rgba(0, 0, 0, 0.5)',
   red1: '#E06379',
+  yellow: '#EAC02E',
 };
 
 export const colors = {
   primary: mainColors.green1,
   secondary: mainColors.dark1,
   tertiary: mainColors.blue1,
+  warning: mainColors.yellow,
   white: 'white',
   disable: mainColors.grey3,
   text: {
@@ -28,12 +31,16 @@ export const colors = {
   },
   button: {
     primary: {
-      background: mainColors.green1,
       text: 'white',
+      background: mainColors.green1,
     },
     secondary: {
-      background: 'white',
       text: mainColors.dark1,
+      background: 'white',
+    },
+    disable: {
+      text: mainColors.grey4,
+      background: mainColors.grey3,
     },
   },
   border: mainColors.grey2,
