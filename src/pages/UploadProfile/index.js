@@ -5,16 +5,17 @@ import {showMessage} from 'react-native-flash-message';
 import {IconAddButton, IconRemovePhoto, IL_PhotoNull} from '../../assets';
 import {Button, Gap, Header, Link} from '../../components';
 import {colors, fonts} from '../../utils';
+import {Firebase} from '../../config';
 
 const UploadProfile = ({navigation, route}) => {
-  const {fullName, profession} = route.params;
-
+  const {fullName, profession, uid} = route.params;
   const [hasPhoto, setHasPhoto] = useState(false);
   const [photo, setPhoto] = useState(IL_PhotoNull);
+  const [photoForDB, setPhotoDB] = useState('');
 
   const getImage = () => {
     // Open Image Library:
-    launchImageLibrary({}, (response) => {
+    launchImageLibrary({includeBase64: true}, (response) => {
       // Same code as in above section!
       if (response.didCancel || response.error) {
         showMessage({
@@ -24,12 +25,22 @@ const UploadProfile = ({navigation, route}) => {
           color: colors.white,
         });
       } else {
+        setPhotoDB(`data:${response.type}:base64, ${response.base64}`);
         const source = {uri: response.uri};
         setPhoto(source);
         setHasPhoto(true);
       }
-      console.log('response: ', response);
     });
+  };
+
+  const uploadPhoto = () => {
+    Firebase.database()
+      // root users (table name)
+      // success.user.uid to save data with the registered uid user
+      .ref('users/' + uid + '/')
+      // save data to firebase
+      .update({photo: photoForDB});
+    navigation.replace('MainApp');
   };
 
   return (
@@ -53,7 +64,7 @@ const UploadProfile = ({navigation, route}) => {
           <Button
             disable={!hasPhoto}
             title="Upload and Continue"
-            onPress={() => navigation.replace('MainApp')}
+            onPress={uploadPhoto}
           />
           <Gap height={30} />
           <Link

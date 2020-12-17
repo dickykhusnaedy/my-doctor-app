@@ -25,12 +25,13 @@ const Register = ({navigation}) => {
           fullName: form.fullName,
           profession: form.profession,
           email: form.email,
+          uid: success.user.uid,
         };
         // Save data to Realtime Database in Firebase
         Firebase.database()
           // root users (table name)
           // success.user.uid to save data with the registered uid user
-          .ref('users' + success.user.uid + '/')
+          .ref('users/' + success.user.uid + '/')
           // save data to firebase
           .set(data);
         // Save data form to Local Storage Device
