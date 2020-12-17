@@ -6,7 +6,9 @@ import {IconAddButton, IconRemovePhoto, IL_PhotoNull} from '../../assets';
 import {Button, Gap, Header, Link} from '../../components';
 import {colors, fonts} from '../../utils';
 
-const UploadProfile = ({navigation}) => {
+const UploadProfile = ({navigation, route}) => {
+  const {fullName, profession} = route.params;
+
   const [hasPhoto, setHasPhoto] = useState(false);
   const [photo, setPhoto] = useState(IL_PhotoNull);
 
@@ -44,8 +46,8 @@ const UploadProfile = ({navigation}) => {
             {!hasPhoto && <IconAddButton style={styles.btnStyle} />}
             {hasPhoto && <IconRemovePhoto style={styles.btnStyle} />}
           </TouchableOpacity>
-          <Text style={styles.textTitle}>Shayna Melinda</Text>
-          <Text style={styles.textSubTitle}>Product Designer</Text>
+          <Text style={styles.textTitle}>{fullName}</Text>
+          <Text style={styles.textSubTitle}>{profession}</Text>
         </View>
         <View style={styles.bottomWrapper}>
           <Button
@@ -108,13 +110,15 @@ const styles = StyleSheet.create({
   textTitle: {
     fontSize: 24,
     textAlign: 'center',
+    textTransform: 'capitalize',
     color: colors.text.primary,
     fontFamily: fonts.primary[600],
   },
   textSubTitle: {
     fontSize: 18,
-    textAlign: 'center',
     marginTop: 4,
+    textAlign: 'center',
+    textTransform: 'capitalize',
     color: colors.text.secondary,
     fontFamily: fonts.primary.normal,
   },

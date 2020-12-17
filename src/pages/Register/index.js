@@ -36,7 +36,7 @@ const Register = ({navigation}) => {
         // Save data form to Local Storage Device
         storeData('user', data);
         setForm('reset');
-        navigation.navigate('UploadProfile');
+        navigation.navigate('UploadProfile', data);
         console.log('Register success', success);
       })
       .catch((error) => {
@@ -50,7 +50,6 @@ const Register = ({navigation}) => {
         });
         console.log('Error registers: ', error);
       });
-    // console.log(form);
   };
 
   return (
