@@ -15,22 +15,25 @@ const UploadProfile = ({navigation, route}) => {
 
   const getImage = () => {
     // Open Image Library:
-    launchImageLibrary({includeBase64: true}, (response) => {
-      // Same code as in above section!
-      if (response.didCancel || response.error) {
-        showMessage({
-          message: 'Opps, sepertinya Anda tidak memilih foto',
-          type: 'default',
-          backgroundColor: colors.warning,
-          color: colors.white,
-        });
-      } else {
-        setPhotoDB(`data:${response.type}:base64, ${response.base64}`);
-        const source = {uri: response.uri};
-        setPhoto(source);
-        setHasPhoto(true);
-      }
-    });
+    launchImageLibrary(
+      {includeBase64: true, quality: 0.3, maxWidth: 200, maxHeight: 200},
+      (response) => {
+        // Same code as in above section!
+        if (response.didCancel || response.error) {
+          showMessage({
+            message: 'Opps, sepertinya Anda tidak memilih foto',
+            type: 'default',
+            backgroundColor: colors.warning,
+            color: colors.white,
+          });
+        } else {
+          setPhotoDB(`data:${response.type}:base64, ${response.base64}`);
+          const source = {uri: response.uri};
+          setPhoto(source);
+          setHasPhoto(true);
+        }
+      },
+    );
   };
 
   const uploadPhoto = () => {
