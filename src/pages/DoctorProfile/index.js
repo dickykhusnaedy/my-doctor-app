@@ -1,5 +1,6 @@
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
+import {DummyImageDocter1} from '../../assets';
 import {Button, Gap, Header, Profile, ProfileItem} from '../../components';
 import {colors} from '../../utils';
 
@@ -8,7 +9,11 @@ const DoctorProfile = ({navigation}) => {
     <View style={styles.page}>
       <Header title="Profil Dokter" onPress={() => navigation.goBack()} />
       <Gap height={20} />
-      <Profile name="Nairobi Putri Hayza" desc="Dokter Anak" />
+      <Profile
+        name="Nairobi Putri Hayza"
+        desc="Dokter Anak"
+        photo={DummyImageDocter1}
+      />
       <Gap height={10} />
       <ProfileItem title="Alumnus" value="Universitas Indonesia, 2020" />
       <ProfileItem title="Tempat Praktik" value="Rumah Sakit Umum, Bandung" />
