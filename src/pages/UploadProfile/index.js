@@ -4,11 +4,13 @@ import {launchImageLibrary} from 'react-native-image-picker';
 import {showMessage} from 'react-native-flash-message';
 import {IconAddButton, IconRemovePhoto, IL_PhotoNull} from '../../assets';
 import {Button, Gap, Header, Link} from '../../components';
-import {colors, fonts} from '../../utils';
+import {colors, fonts, storeData} from '../../utils';
 import {Firebase} from '../../config';
 
 const UploadProfile = ({navigation, route}) => {
+  // got params/parameter sent from Register screen
   const {fullName, profession, uid} = route.params;
+
   const [hasPhoto, setHasPhoto] = useState(false);
   const [photo, setPhoto] = useState(IL_PhotoNull);
   const [photoForDB, setPhotoDB] = useState('');
@@ -27,7 +29,7 @@ const UploadProfile = ({navigation, route}) => {
             color: colors.white,
           });
         } else {
-          setPhotoDB(`data:${response.type}:base64, ${response.base64}`);
+          setPhotoDB(`data:${response.type};base64, ${response.base64}`);
           const source = {uri: response.uri};
           setPhoto(source);
           setHasPhoto(true);
@@ -43,6 +45,14 @@ const UploadProfile = ({navigation, route}) => {
       .ref('users/' + uid + '/')
       // save data to firebase
       .update({photo: photoForDB});
+
+    // take data from params to save to localstorage
+    const data = route.params;
+    data.photo = photoForDB;
+
+    // save data to localstorage
+    storeData('user', data);
+
     navigation.replace('MainApp');
   };
 

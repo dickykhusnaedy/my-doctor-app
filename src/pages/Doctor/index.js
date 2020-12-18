@@ -2,6 +2,12 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {
+  DummyImageDocter1,
+  DummyImageDocter2,
+  DummyImageDocter3,
+  JSONCategoryDoctor,
+} from '../../assets';
+import {
   DoctorCategory,
   Gap,
   GoodNews,
@@ -9,12 +15,6 @@ import {
   RatedDoctor,
 } from '../../components';
 import {colors, fonts} from '../../utils';
-import {
-  DummyImageDocter1,
-  DummyImageDocter2,
-  DummyImageDocter3,
-  JSONCategoryDoctor,
-} from '../../assets';
 
 const Doctor = ({navigation}) => {
   return (

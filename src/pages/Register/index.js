@@ -38,7 +38,6 @@ const Register = ({navigation}) => {
         storeData('user', data);
         setForm('reset');
         navigation.navigate('UploadProfile', data);
-        console.log('Register success', success);
       })
       .catch((error) => {
         const errorMessage = error.message;
@@ -49,7 +48,6 @@ const Register = ({navigation}) => {
           backgroundColor: colors.message.error,
           color: colors.white,
         });
-        console.log('Error registers: ', error);
       });
   };
 
