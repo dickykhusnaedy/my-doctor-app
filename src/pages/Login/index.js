@@ -1,11 +1,10 @@
 import React from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import {showMessage} from 'react-native-flash-message';
 import {useDispatch} from 'react-redux';
 import {IL_Logo} from '../../assets';
 import {Button, Gap, Input, Link} from '../../components';
 import {Firebase} from '../../config';
-import {colors, fonts, storeData, useForm} from '../../utils';
+import {colors, fonts, storeData, useForm, showError} from '../../utils';
 
 const Login = ({navigation}) => {
   const dispacth = useDispatch();
@@ -22,11 +21,11 @@ const Login = ({navigation}) => {
       .then((success) => {
         // a function to change reducer "SET_LOADING" from redux
         dispacth({type: 'SET_LOADING', value: false});
+        // function for login with firebase realtime database
         Firebase.database()
           .ref(`users/${success.user.uid}/`)
           .once('value')
           .then((result) => {
-            console.log('data user: ', result.val());
             if (result.val()) {
               storeData('user', result.val());
               navigation.replace('MainApp');
@@ -37,12 +36,8 @@ const Login = ({navigation}) => {
       .catch((error) => {
         // a function to change reducer "SET_LOADING" from redux
         dispacth({type: 'SET_LOADING', value: false});
-        showMessage({
-          message: error.message,
-          type: 'default',
-          backgroundColor: colors.message.error,
-          color: colors.white,
-        });
+        // show error when login not success
+        showError(error.message);
       });
   };
 

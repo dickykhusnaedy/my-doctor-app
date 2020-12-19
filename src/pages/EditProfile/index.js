@@ -1,12 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {showMessage} from 'react-native-flash-message';
 import {launchImageLibrary} from 'react-native-image-picker';
-import {set} from 'react-native-reanimated';
 import {IL_PhotoNull} from '../../assets';
 import {Button, Gap, Header, Input, Loading, Profile} from '../../components';
 import {Firebase} from '../../config';
-import {colors, getData, storeData} from '../../utils';
+import {colors, getData, showError, storeData} from '../../utils';
 
 const EditProfile = ({navigation}) => {
   const [loading, setLoading] = useState(false);
@@ -33,14 +31,8 @@ const EditProfile = ({navigation}) => {
       (response) => {
         // Same code as in above section!
         if (response.didCancel || response.error) {
-          showMessage({
-            message: 'Opps, sepertinya Anda tidak memilih foto',
-            type: 'default',
-            backgroundColor: colors.warning,
-            color: colors.white,
-          });
+          showError('Opps, sepertinya Anda tidak memilih foto');
         } else {
-          console.log('success', response);
           setPhotoDB(`data:${response.type};base64, ${response.base64}`);
           const source = {uri: response.uri};
           setPhoto(source);
@@ -59,12 +51,7 @@ const EditProfile = ({navigation}) => {
         storeData('user', data);
       })
       .catch((error) => {
-        showMessage({
-          message: error.message,
-          type: 'default',
-          backgroundColor: colors.message.error,
-          color: colors.white,
-        });
+        showError(error.message);
       });
   };
 
@@ -72,12 +59,7 @@ const EditProfile = ({navigation}) => {
     Firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         user.updatePassword(password).catch((error) => {
-          showMessage({
-            message: error.message,
-            type: 'default',
-            backgroundColor: colors.message.error,
-            color: colors.white,
-          });
+          showError(error.message);
         });
       }
     });
@@ -86,12 +68,7 @@ const EditProfile = ({navigation}) => {
   const updateProfile = () => {
     if (password.length > 0) {
       if (password.length < 6) {
-        showMessage({
-          message: 'Oppss.. password Anda kurang dari 6 karakter',
-          type: 'default',
-          backgroundColor: colors.message.error,
-          color: colors.white,
-        });
+        showError('Oppss.. password Anda kurang dari 6 karakter');
       } else {
         // update password
         updatePassword();
@@ -111,6 +88,7 @@ const EditProfile = ({navigation}) => {
       setProfile(data);
     });
   }, []);
+
   return (
     <>
       <View style={styles.page}>

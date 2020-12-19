@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
-import {showMessage} from 'react-native-flash-message';
+import {useDispatch} from 'react-redux';
 import {IL_PhotoNull} from '../../assets';
 import {Gap} from '../../components/atom';
 import {Header, List, Profile} from '../../components/molecules';
 import {Firebase} from '../../config';
-import {colors, getData} from '../../utils';
+import {colors, getData, showError, showSuccess} from '../../utils';
 
 const UserProfile = ({navigation}) => {
+  const dispacth = useDispatch();
   const [profile, setProfile] = useState({
     photo: IL_PhotoNull,
     fullName: '',
@@ -23,19 +24,17 @@ const UserProfile = ({navigation}) => {
   }, []);
 
   const signOut = () => {
+    dispacth({type: 'SET_LOADING', value: true});
     Firebase.auth()
       .signOut()
       .then(() => {
-        console.log('success logout');
+        dispacth({type: 'SET_LOADING', value: false});
+        showSuccess('Your sign out have been succesfully');
         navigation.replace('GetStarted');
       })
       .catch((error) => {
-        showMessage({
-          message: error.message,
-          type: 'default',
-          backgroundColor: colors.message.error,
-          color: colors.white,
-        });
+        dispacth({type: 'SET_LOADING', value: false});
+        showError(error.message);
       });
   };
 

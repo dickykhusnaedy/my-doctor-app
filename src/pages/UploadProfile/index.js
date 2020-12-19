@@ -1,16 +1,14 @@
 import React, {useState} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
-import {showMessage} from 'react-native-flash-message';
 import {IconAddButton, IconRemovePhoto, IL_PhotoNull} from '../../assets';
 import {Button, Gap, Header, Link} from '../../components';
-import {colors, fonts, storeData} from '../../utils';
 import {Firebase} from '../../config';
+import {colors, fonts, showError, storeData} from '../../utils';
 
 const UploadProfile = ({navigation, route}) => {
   // got params/parameter sent from Register screen
   const {fullName, profession, uid} = route.params;
-
   const [hasPhoto, setHasPhoto] = useState(false);
   const [photo, setPhoto] = useState(IL_PhotoNull);
   const [photoForDB, setPhotoDB] = useState('');
@@ -22,12 +20,7 @@ const UploadProfile = ({navigation, route}) => {
       (response) => {
         // Same code as in above section!
         if (response.didCancel || response.error) {
-          showMessage({
-            message: 'Opps, sepertinya Anda tidak memilih foto',
-            type: 'default',
-            backgroundColor: colors.warning,
-            color: colors.white,
-          });
+          showError('Opps, sepertinya Anda tidak memilih foto');
         } else {
           setPhotoDB(`data:${response.type};base64, ${response.base64}`);
           const source = {uri: response.uri};
