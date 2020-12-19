@@ -10,6 +10,15 @@ export const showError = (message) => {
   });
 };
 
+export const showWarning = (message) => {
+  showMessage({
+    message: message,
+    type: 'default',
+    backgroundColor: colors.warning,
+    color: colors.white,
+  });
+};
+
 export const showSuccess = (message) => {
   showMessage({
     message: message,

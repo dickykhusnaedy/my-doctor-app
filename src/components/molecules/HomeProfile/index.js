@@ -15,7 +15,7 @@ const HomeProfile = ({onPress}) => {
       // add {uri} for data.photo to show image profile in component image
       const data = res;
       data.photo = {uri: res.photo};
-      setProfile(res);
+      setProfile(data);
     });
   }, []);
 

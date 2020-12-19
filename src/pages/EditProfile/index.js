@@ -2,12 +2,11 @@ import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {IL_PhotoNull} from '../../assets';
-import {Button, Gap, Header, Input, Loading, Profile} from '../../components';
+import {Button, Gap, Header, Input, Profile} from '../../components';
 import {Firebase} from '../../config';
-import {colors, getData, showError, storeData} from '../../utils';
+import {colors, getData, showError, showWarning, storeData} from '../../utils';
 
 const EditProfile = ({navigation}) => {
-  const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState({
     fullName: '',
     profession: '',
@@ -31,7 +30,7 @@ const EditProfile = ({navigation}) => {
       (response) => {
         // Same code as in above section!
         if (response.didCancel || response.error) {
-          showError('Opps, sepertinya Anda tidak memilih foto');
+          showWarning('Opps, sepertinya Anda tidak memilih foto');
         } else {
           setPhotoDB(`data:${response.type};base64, ${response.base64}`);
           const source = {uri: response.uri};
@@ -90,42 +89,39 @@ const EditProfile = ({navigation}) => {
   }, []);
 
   return (
-    <>
-      <View style={styles.page}>
-        <Header title="Edit Profile" onPress={() => navigation.goBack()} />
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles.content}>
-            <Gap height={20} />
-            <Profile isRemove photo={photo} onPress={getImage} />
-            <Gap height={26} />
-            <Input
-              label="Full Name"
-              value={profile.fullName}
-              onChangeText={(value) => onChangeText('fullName', value)}
-            />
-            <Gap height={24} />
-            <Input
-              label="Pekerjaan"
-              value={profile.profession}
-              onChangeText={(value) => onChangeText('profession', value)}
-            />
-            <Gap height={24} />
-            <Input label="Email Address" value={profile.email} disable />
-            <Gap height={24} />
-            <Input
-              label="Password"
-              value={password}
-              onChangeText={(value) => setPassword(value)}
-              secureTextEntry
-            />
-            <Gap height={40} />
-            <Button title="Save Profile" onPress={updateProfile} />
-            <Gap height={20} />
-          </View>
-        </ScrollView>
-      </View>
-      {loading && <Loading />}
-    </>
+    <View style={styles.page}>
+      <Header title="Edit Profile" onPress={() => navigation.goBack()} />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <View style={styles.content}>
+          <Gap height={20} />
+          <Profile isRemove photo={photo} onPress={getImage} />
+          <Gap height={26} />
+          <Input
+            label="Full Name"
+            value={profile.fullName}
+            onChangeText={(value) => onChangeText('fullName', value)}
+          />
+          <Gap height={24} />
+          <Input
+            label="Pekerjaan"
+            value={profile.profession}
+            onChangeText={(value) => onChangeText('profession', value)}
+          />
+          <Gap height={24} />
+          <Input label="Email Address" value={profile.email} disable />
+          <Gap height={24} />
+          <Input
+            label="Password"
+            value={password}
+            onChangeText={(value) => setPassword(value)}
+            secureTextEntry
+          />
+          <Gap height={40} />
+          <Button title="Save Profile" onPress={updateProfile} />
+          <Gap height={20} />
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 
