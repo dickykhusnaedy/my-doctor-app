@@ -1,15 +1,27 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {ImageBackground, StyleSheet, Text, View} from 'react-native';
-import {
-  DummyImageHospital1,
-  DummyImageHospital2,
-  DummyImageHospital3,
-  IL_ImageBG,
-} from '../../assets';
-import ListHospitals from '../../components/molecules/ListHospitals';
-import {colors, fonts} from '../../utils';
+import {IL_ImageBG} from '../../assets';
+import {ListHospitals} from '../../components/molecules';
+import {Firebase} from '../../config';
+import {colors, fonts, showError} from '../../utils';
 
 const Hospitals = () => {
+  const [hospital, setHospital] = useState([]);
+
+  useEffect(() => {
+    Firebase.database()
+      .ref('hospital/')
+      .once('value')
+      .then((success) => {
+        if (success.val()) {
+          setHospital(success.val());
+        }
+      })
+      .catch((error) => {
+        showError(error.message);
+      });
+  }, []);
+
   return (
     <View style={styles.page}>
       <ImageBackground source={IL_ImageBG} style={styles.backgroud}>
@@ -17,24 +29,17 @@ const Hospitals = () => {
         <Text style={styles.subTitle}>3 tersedia</Text>
       </ImageBackground>
       <View style={styles.content}>
-        <ListHospitals
-          image={DummyImageHospital1}
-          type="Rumah Sakit"
-          name="Citra Bunga Merdeka"
-          address="Jln. Surya Sejahtera 20"
-        />
-        <ListHospitals
-          image={DummyImageHospital2}
-          type="Rumah Sakit Anak"
-          name="Happy Family & Kids"
-          address="Jln. Surya Sejahtera 20"
-        />
-        <ListHospitals
-          image={DummyImageHospital3}
-          type="Rumah Sakit Jiwa"
-          name="Tingkatan Paling Atas"
-          address="Jln. Surya Sejahtera 20"
-        />
+        {hospital.map((item) => {
+          return (
+            <ListHospitals
+              key={item.id}
+              image={item.image}
+              type={item.type}
+              name={item.name}
+              address={item.address}
+            />
+          );
+        })}
       </View>
     </View>
   );

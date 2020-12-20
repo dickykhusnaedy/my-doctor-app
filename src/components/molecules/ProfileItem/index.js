@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
   value: {
     fontSize: 16,
     marginTop: 6,
+    textTransform: 'capitalize',
     color: colors.text.primary,
     fontFamily: fonts.primary.normal,
   },

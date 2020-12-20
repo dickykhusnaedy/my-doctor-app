@@ -3,9 +3,10 @@ import {Image, StyleSheet, Text, View} from 'react-native';
 import {colors, fonts} from '../../../utils';
 
 const ListHospitals = ({image, type, name, address}) => {
+  console.log('name', name);
   return (
     <View style={styles.container}>
-      <Image source={image} style={styles.image} />
+      <Image source={{uri: image}} style={styles.image} />
       <View>
         <Text style={styles.hospitalName}>{type}</Text>
         <Text style={styles.hospitalName}>{name}</Text>

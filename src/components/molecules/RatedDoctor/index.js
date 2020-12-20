@@ -1,12 +1,15 @@
 import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {IconStar} from '../../../assets';
+import {IconStar, IL_PhotoNull} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
 const RatedDoctor = ({avatar, name, desc, onPress}) => {
   return (
     <TouchableOpacity style={styles.content} onPress={onPress}>
-      <Image source={avatar} style={styles.avatar} />
+      <Image
+        source={avatar.length > 1 ? avatar : IL_PhotoNull}
+        style={styles.avatar}
+      />
       <View style={styles.profile}>
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.profession}>{desc}</Text>
@@ -47,6 +50,7 @@ const styles = StyleSheet.create({
   },
   profession: {
     fontSize: 12,
+    textTransform: 'capitalize',
     color: colors.text.secondary,
     fontFamily: fonts.primary.normal,
   },
