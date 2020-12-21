@@ -27,9 +27,11 @@ const Doctor = ({navigation}) => {
     Firebase.database()
       .ref('category_doctor/')
       .once('value')
-      .then((success) => {
-        if (success.val()) {
-          setCategoryDocter(success.val());
+      .then((res) => {
+        if (res.val()) {
+          const data = res.val();
+          const filterData = data.filter((el) => el !== null);
+          setCategoryDocter(filterData);
         }
       })
       .catch((error) => {
@@ -38,14 +40,15 @@ const Doctor = ({navigation}) => {
   };
 
   const getTopRatedDoctors = () => {
+    // get rate data from value doctors at firebase
     Firebase.database()
       .ref('doctors/')
       .orderByChild('rate')
       .limitToLast(3)
       .once('value')
-      .then((success) => {
-        if (success.val()) {
-          const oldData = success.val();
+      .then((res) => {
+        if (res.val()) {
+          const oldData = res.val();
           const data = [];
 
           Object.keys(oldData).map((key) => {
@@ -67,9 +70,11 @@ const Doctor = ({navigation}) => {
     Firebase.database()
       .ref('news/')
       .once('value')
-      .then((success) => {
-        if (success.val()) {
-          setNews(success.val());
+      .then((res) => {
+        if (res.val()) {
+          const data = res.val();
+          const filterData = data.filter((el) => el !== null);
+          setNews(filterData);
         }
       })
       .catch((error) => {
@@ -97,7 +102,7 @@ const Doctor = ({navigation}) => {
                     <DoctorCategory
                       key={item.id}
                       category={item.category}
-                      onPress={() => navigation.navigate('ChooseDoctor')}
+                      onPress={() => navigation.navigate('ChooseDoctor', item)}
                     />
                   );
                 })}

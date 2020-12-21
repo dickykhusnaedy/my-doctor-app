@@ -6,6 +6,7 @@ import {
   IconNext,
   IconRate,
   IconUser,
+  IL_PhotoNull,
 } from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
@@ -27,7 +28,14 @@ const List = ({image, name, desc, type, onPress, icon}) => {
   };
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
-      {icon ? <Icon /> : <Image source={image} style={styles.imageDoctor} />}
+      {icon ? (
+        <Icon />
+      ) : (
+        <Image
+          source={image.length > 1 ? image : IL_PhotoNull}
+          style={styles.imageDoctor}
+        />
+      )}
       <View style={styles.wrapperListChat}>
         <Text style={styles.nameDoctor}>{name}</Text>
         <Text style={styles.desc}>{desc}</Text>
@@ -64,6 +72,7 @@ const styles = StyleSheet.create({
   },
   desc: {
     fontSize: 12,
+    textTransform: 'capitalize',
     color: colors.text.secondary,
     fontFamily: fonts.primary[300],
   },

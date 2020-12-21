@@ -1,45 +1,56 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import {DummyImageDocter1} from '../../assets';
 import {Header, List} from '../../components';
+import {Firebase} from '../../config';
 import {colors} from '../../utils';
 
-const ChoooseDoctor = ({navigation}) => {
+const ChoooseDoctor = ({navigation, route}) => {
+  const itemCategory = route.params;
+  const [listDoctor, setListDoctor] = useState([]);
+
+  const callDoctorByCategory = (category) => {
+    Firebase.database()
+      .ref('doctors/')
+      .orderByChild('category') // for display data by category
+      .equalTo(category) // for sort data relate with orderByChild
+      .once('value')
+      .then((res) => {
+        const oldData = res.val();
+        const data = [];
+        // for parse or convert object data to object array data
+        Object.keys(oldData).map((key) => {
+          data.push({
+            id: key,
+            data: oldData[key],
+          });
+        });
+        setListDoctor(data);
+      });
+  };
+
+  useEffect(() => {
+    callDoctorByCategory(itemCategory.category);
+  }, []);
+
   return (
     <View style={styles.container}>
       <Header
         type="dark"
-        title="Pilih Dokter Anak"
+        title={`Pilih ${itemCategory.category}`}
         onPress={() => navigation.goBack()}
       />
-      <List
-        type="dark"
-        image={DummyImageDocter1}
-        name="Alexander Jannie"
-        desc="Wanita"
-        onPress={() => navigation.push('Chatting')}
-      />
-      <List
-        type="dark"
-        image={DummyImageDocter1}
-        name="Alexander Jannie"
-        desc="Wanita"
-        onPress={() => navigation.push('Chatting')}
-      />
-      <List
-        type="dark"
-        image={DummyImageDocter1}
-        name="Alexander Jannie"
-        desc="Wanita"
-        onPress={() => navigation.push('Chatting')}
-      />
-      <List
-        type="dark"
-        image={DummyImageDocter1}
-        name="Alexander Jannie"
-        desc="Wanita"
-        onPress={() => navigation.push('Chatting')}
-      />
+      {listDoctor.map((item) => {
+        return (
+          <List
+            key={item.id}
+            type="dark"
+            image={{uri: item.data.photo}}
+            name={item.data.fullName}
+            desc={item.data.gender}
+            onPress={() => navigation.push('DoctorProfile', item)}
+          />
+        );
+      })}
     </View>
   );
 };

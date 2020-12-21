@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
   titleHeader: (type) => ({
     fontSize: 20,
     flex: 1,
+    textTransform: 'capitalize',
     textAlign: 'center',
     color: type === 'dark' ? colors.white : colors.text.primary,
     fontFamily: fonts.primary[600],
