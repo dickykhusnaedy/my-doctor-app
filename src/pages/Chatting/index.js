@@ -114,6 +114,7 @@ const Chatting = ({navigation, route}) => {
         </ScrollView>
       </View>
       <InputChat
+        fullName={dataDoctor.data.fullName}
         value={chatContent}
         onChangeText={(value) => setChatContent(value)}
         onPress={chatSend}

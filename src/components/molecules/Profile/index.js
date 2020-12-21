@@ -1,6 +1,6 @@
 import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {IconRemovePhoto, IL_PhotoNull} from '../../../assets';
+import {IconRemovePhoto} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
 const Profile = ({photo, name, desc, isRemove, onPress}) => {
@@ -8,10 +8,7 @@ const Profile = ({photo, name, desc, isRemove, onPress}) => {
     <View style={styles.content}>
       {!isRemove && (
         <View style={styles.profileWrapper}>
-          <Image
-            source={photo.length > 1 ? photo : IL_PhotoNull}
-            style={styles.avatar}
-          />
+          <Image source={photo} style={styles.avatar} />
         </View>
       )}
       {isRemove && (

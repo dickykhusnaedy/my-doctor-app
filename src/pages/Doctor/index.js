@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
+import {IL_PhotoNull} from '../../assets';
 import {
   DoctorCategory,
   Gap,
@@ -9,18 +10,26 @@ import {
   RatedDoctor,
 } from '../../components';
 import {Firebase} from '../../config';
-import {colors, fonts, showError} from '../../utils';
+import {colors, fonts, showError, getData} from '../../utils';
 
 const Doctor = ({navigation}) => {
   const [news, setNews] = useState([]);
   const [categoryDocter, setCategoryDocter] = useState([]);
   const [doctors, setDoctor] = useState([]);
+  const [profile, setProfile] = useState({
+    photo: IL_PhotoNull,
+    fullName: '',
+    profession: '',
+  });
 
-  useEffect(() => {
-    getNews();
-    getTopRatedDoctors();
-    getCategoryDoctor();
-  }, []);
+  const getUserDataFromLocal = () => {
+    getData('user').then((res) => {
+      // add {uri} for data.photo to show image profile in component image
+      const data = res;
+      data.photo = res?.photo?.length > 1 ? {uri: res.photo} : IL_PhotoNull;
+      setProfile(data);
+    });
+  };
 
   const getCategoryDoctor = () => {
     // get data category docter from firebase
@@ -82,13 +91,23 @@ const Doctor = ({navigation}) => {
       });
   };
 
+  useEffect(() => {
+    getNews();
+    getTopRatedDoctors();
+    getCategoryDoctor();
+    getUserDataFromLocal();
+  }, []);
+
   return (
     <View style={styles.page}>
       <View style={styles.content}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.wrapperSection}>
             <Gap height={30} />
-            <HomeProfile onPress={() => navigation.navigate('UserProfile')} />
+            <HomeProfile
+              profile={profile}
+              onPress={() => navigation.navigate('UserProfile')}
+            />
             <Text style={styles.welcome}>
               Mau konsultasi dengan siapa hari ini?
             </Text>

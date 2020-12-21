@@ -16,12 +16,16 @@ const UserProfile = ({navigation}) => {
   });
 
   useEffect(() => {
+    getDataUserFromLocal();
+  }, []);
+
+  const getDataUserFromLocal = () => {
     getData('user').then((res) => {
       const data = res;
-      data.photo = {uri: res.photo};
+      data.photo = res.photo.length > 1 ? {uri: res.photo} : IL_PhotoNull;
       setProfile(data);
     });
-  }, []);
+  };
 
   const signOut = () => {
     dispacth({type: 'SET_LOADING', value: true});

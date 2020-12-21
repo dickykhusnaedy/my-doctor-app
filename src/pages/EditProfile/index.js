@@ -83,7 +83,7 @@ const EditProfile = ({navigation}) => {
   useEffect(() => {
     getData('user').then((res) => {
       const data = res;
-      setPhoto({uri: res.photo});
+      setPhoto(res.photo.length > 1 ? {uri: res.photo} : IL_PhotoNull);
       setProfile(data);
     });
   }, []);
