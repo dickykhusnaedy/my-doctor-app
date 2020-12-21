@@ -1,19 +1,20 @@
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
-import {DummyImageDocter1} from '../../../assets';
+import {IL_PhotoNull} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
-const Other = () => {
+const Other = ({text, date, photo}) => {
   return (
     <View style={styles.container}>
-      <Image source={DummyImageDocter1} style={styles.avatar} />
+      <Image
+        source={photo === null ? photo : IL_PhotoNull}
+        style={styles.avatar}
+      />
       <View>
         <View style={styles.content}>
-          <Text style={styles.chat}>
-            Ibu dokter, apakah memakan jeruk tiap hari itu buruk?
-          </Text>
+          <Text style={styles.chat}>{text}</Text>
         </View>
-        <Text style={styles.chatDate}>4.20 AM</Text>
+        <Text style={styles.chatDate}>{date}</Text>
       </View>
     </View>
   );

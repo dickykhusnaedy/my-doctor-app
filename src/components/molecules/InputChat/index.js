@@ -3,14 +3,16 @@ import {StyleSheet, TextInput, View} from 'react-native';
 import {colors, fonts} from '../../../utils';
 import BtnIconSend from '../../atom/Button/BtnIconSend';
 
-const InputChat = () => {
+const InputChat = ({value, onChangeText, onPress}) => {
   return (
     <View style={styles.container}>
       <TextInput
         placeholder="Tulis pesan untuk Nairobi"
+        value={value}
+        onChangeText={onChangeText}
         style={styles.textInput}
       />
-      <BtnIconSend disable />
+      <BtnIconSend disable={value.length < 1} onPress={onPress} />
     </View>
   );
 };
@@ -21,6 +23,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 16,
     flexDirection: 'row',
+    backgroundColor: colors.white,
   },
   textInput: {
     flex: 1,

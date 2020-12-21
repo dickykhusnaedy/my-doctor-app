@@ -25,7 +25,7 @@ const DoctorProfile = ({navigation, route}) => {
       <View style={styles.btnWrapper}>
         <Button
           title="Start Consultation"
-          onPress={() => navigation.navigate('Chatting')}
+          onPress={() => navigation.navigate('Chatting', dataDoctor)}
         />
       </View>
     </View>

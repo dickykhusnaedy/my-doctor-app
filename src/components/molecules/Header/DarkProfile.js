@@ -1,18 +1,21 @@
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
-import {DummyImageDocter1} from '../../../assets';
+import {IL_PhotoNull} from '../../../assets';
 import {colors, fonts} from '../../../utils';
 import {Button} from '../../atom';
 
-const DarkProfile = ({onPress}) => {
+const DarkProfile = ({onPress, title, desc, photo}) => {
   return (
     <View style={styles.container}>
       <Button type="icon-only" icon="back-light" onPress={onPress} />
       <View style={styles.content}>
-        <Text style={styles.doctorName}>Nairobi Putri Hayza</Text>
-        <Text style={styles.doctorCategory}>Dokter Anak</Text>
+        <Text style={styles.doctorName}>{title}</Text>
+        <Text style={styles.doctorCategory}>{desc}</Text>
       </View>
-      <Image source={DummyImageDocter1} style={styles.avatar} />
+      <Image
+        source={photo.length > 1 ? photo : IL_PhotoNull}
+        style={styles.avatar}
+      />
     </View>
   );
 };
@@ -40,6 +43,7 @@ const styles = StyleSheet.create({
   doctorCategory: {
     fontSize: 14,
     textAlign: 'center',
+    textTransform: 'capitalize',
     color: colors.text.subTitle,
     fontFamily: fonts.primary.normal,
   },
