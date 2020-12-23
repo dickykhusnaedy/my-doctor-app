@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, Text, View, TextInput} from 'react-native';
-import {colors, fonts} from '../../../utils';
+import {colors, fonts, showError} from '../../../utils';
 
 const Input = ({
   label,
@@ -9,6 +9,7 @@ const Input = ({
   onChangeText,
   secureTextEntry,
   disable,
+  error,
 }) => {
   const [borderColor, setBorderColor] = useState(colors.border);
   const onFocusForm = () => {
@@ -16,6 +17,16 @@ const Input = ({
   };
   const onBlurForm = () => {
     setBorderColor(colors.border);
+    if (error) {
+      if (value.length === 0) {
+        setBorderColor(colors.border);
+      } else if (value.length < 6) {
+        setBorderColor(colors.message.error);
+        showError('Oppss.. password Anda kurang dari 6 karakter');
+      } else {
+        setBorderColor(colors.primary);
+      }
+    }
   };
   return (
     <View>
@@ -23,7 +34,7 @@ const Input = ({
       <TextInput
         onFocus={onFocusForm}
         onBlur={onBlurForm}
-        style={styles.input(borderColor)}
+        style={styles.input(borderColor, !disable)}
         placeholder={placeholder}
         value={value}
         onChangeText={onChangeText}
@@ -38,13 +49,16 @@ const Input = ({
 export default Input;
 
 const styles = StyleSheet.create({
-  input: (borderColor) => ({
+  input: (borderColor, disable) => ({
     borderWidth: 1,
     borderRadius: 10,
     padding: 12,
     fontSize: 16,
     borderColor: borderColor,
-    color: colors.text.primary,
+    backgroundColor: disable
+      ? colors.white
+      : colors.textInput.disable.background,
+    color: disable ? colors.text.primary : colors.textInput.disable.text,
     fontFamily: fonts.primary[400],
   }),
   label: {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {IL_Logo} from '../../assets';
@@ -12,6 +12,7 @@ const Login = ({navigation}) => {
     email: '',
     password: '',
   });
+  const [errorInput, setErrorInput] = useState(true);
 
   const login = () => {
     // a function to change reducer "SET_LOADING" from redux
@@ -34,6 +35,7 @@ const Login = ({navigation}) => {
           });
       })
       .catch((error) => {
+        setErrorInput(error.message);
         // a function to change reducer "SET_LOADING" from redux
         dispacth({type: 'SET_LOADING', value: false});
         // show error when login not success
@@ -58,6 +60,7 @@ const Login = ({navigation}) => {
           value={form.password}
           onChangeText={(value) => setForm('password', value)}
           secureTextEntry
+          error={errorInput}
         />
         <Gap height={10} />
         <Link title="Forgot My Password" size={12} />

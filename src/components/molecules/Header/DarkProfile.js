@@ -13,7 +13,7 @@ const DarkProfile = ({onPress, title, desc, photo}) => {
         <Text style={styles.doctorCategory}>{desc}</Text>
       </View>
       <Image
-        source={photo.length > 1 ? photo : IL_PhotoNull}
+        source={photo.uri.length > 1 ? photo : IL_PhotoNull}
         style={styles.avatar}
       />
     </View>

@@ -10,7 +10,7 @@ import {
   RatedDoctor,
 } from '../../components';
 import {Firebase} from '../../config';
-import {colors, fonts, showError, getData} from '../../utils';
+import {colors, fonts, getData, showError} from '../../utils';
 
 const Doctor = ({navigation}) => {
   const [news, setNews] = useState([]);
@@ -27,7 +27,7 @@ const Doctor = ({navigation}) => {
       // add {uri} for data.photo to show image profile in component image
       const data = res;
       data.photo = res?.photo?.length > 1 ? {uri: res.photo} : IL_PhotoNull;
-      setProfile(data);
+      setProfile(res);
     });
   };
 
@@ -95,8 +95,10 @@ const Doctor = ({navigation}) => {
     getNews();
     getTopRatedDoctors();
     getCategoryDoctor();
-    getUserDataFromLocal();
-  }, []);
+    navigation.addListener('focus', () => {
+      getUserDataFromLocal();
+    });
+  }, [navigation]);
 
   return (
     <View style={styles.page}>

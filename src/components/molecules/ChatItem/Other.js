@@ -7,7 +7,7 @@ const Other = ({text, date, photo}) => {
   return (
     <View style={styles.container}>
       <Image
-        source={photo === null ? photo : IL_PhotoNull}
+        source={photo.uri.length > 1 ? photo : IL_PhotoNull}
         style={styles.avatar}
       />
       <View>

@@ -7,7 +7,7 @@ const RatedDoctor = ({avatar, name, desc, onPress}) => {
   return (
     <TouchableOpacity style={styles.content} onPress={onPress}>
       <Image
-        source={avatar.length > 1 ? avatar : IL_PhotoNull}
+        source={avatar.uri.length > 1 ? avatar : IL_PhotoNull}
         style={styles.avatar}
       />
       <View style={styles.profile}>

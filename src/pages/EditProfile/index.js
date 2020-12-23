@@ -1,12 +1,21 @@
 import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
+import {useDispatch} from 'react-redux';
 import {IL_PhotoNull} from '../../assets';
 import {Button, Gap, Header, Input, Profile} from '../../components';
 import {Firebase} from '../../config';
-import {colors, getData, showError, showWarning, storeData} from '../../utils';
+import {
+  colors,
+  getData,
+  showError,
+  showSuccess,
+  showWarning,
+  storeData,
+} from '../../utils';
 
 const EditProfile = ({navigation}) => {
+  const dispatch = useDispatch();
   const [profile, setProfile] = useState({
     fullName: '',
     profession: '',
@@ -14,7 +23,7 @@ const EditProfile = ({navigation}) => {
   });
   const [password, setPassword] = useState('');
   const [photo, setPhoto] = useState(IL_PhotoNull);
-  const [photoDB, setPhotoDB] = useState('');
+  const [errorInput, setErrorInput] = useState(true);
 
   const onChangeText = (key, value) => {
     setProfile({
@@ -32,21 +41,40 @@ const EditProfile = ({navigation}) => {
         if (response.didCancel || response.error) {
           showWarning('Opps, sepertinya Anda tidak memilih foto');
         } else {
-          setPhotoDB(`data:${response.type};base64, ${response.base64}`);
+          const uploadFile = `data:${response.type};base64, ${response.base64}`;
           const source = {uri: response.uri};
           setPhoto(source);
+          // save photo direct to firebase after user select photo from the gallery
+          dispatch({type: 'SET_LOADING', value: true});
+          setTimeout(async () => {
+            await Firebase.database()
+              // root users (table name)
+              // success.user.uid to save data with the registered uid user
+              .ref(`users/${profile.uid}/`)
+              // save data to firebase
+              .update({photo: uploadFile});
+
+            // store data to localstorage
+            const data = profile;
+            data.photo = uploadFile;
+            storeData('user', data);
+
+            dispatch({type: 'SET_LOADING', value: false});
+            navigation.replace('MainApp');
+          }, 3000);
         }
       },
     );
   };
 
-  const updateProfileData = () => {
+  const updateProfileData = async () => {
+    dispatch({type: 'SET_LOADING', value: true});
     const data = profile;
-    data.photo = photoDB;
-    Firebase.database()
+    await Firebase.database()
       .ref(`users/${profile.uid}/`)
       .update(data)
       .then(() => {
+        showSuccess('Your data has been changed successfully');
         storeData('user', data);
       })
       .catch((error) => {
@@ -55,11 +83,18 @@ const EditProfile = ({navigation}) => {
   };
 
   const updatePassword = () => {
+    dispatch({type: 'SET_LOADING', value: true});
     Firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        user.updatePassword(password).catch((error) => {
-          showError(error.message);
-        });
+        user
+          .updatePassword(password)
+          .then(() => {
+            showSuccess('Your password has been changed successfully');
+          })
+          .catch((error) => {
+            setErrorInput(error.message);
+            showError(error.message);
+          });
       }
     });
   };
@@ -69,14 +104,19 @@ const EditProfile = ({navigation}) => {
       if (password.length < 6) {
         showError('Oppss.. password Anda kurang dari 6 karakter');
       } else {
-        // update password
         updatePassword();
         updateProfileData();
-        navigation.replace('MainApp');
+        setTimeout(() => {
+          dispatch({type: 'SET_LOADING', value: false});
+          navigation.replace('MainApp');
+        }, 3000);
       }
     } else {
       updateProfileData();
-      navigation.replace('MainApp');
+      setTimeout(() => {
+        dispatch({type: 'SET_LOADING', value: false});
+        navigation.replace('MainApp');
+      }, 3000);
     }
   };
 
@@ -115,6 +155,7 @@ const EditProfile = ({navigation}) => {
             value={password}
             onChangeText={(value) => setPassword(value)}
             secureTextEntry
+            error={errorInput}
           />
           <Gap height={40} />
           <Button title="Save Profile" onPress={updateProfile} />

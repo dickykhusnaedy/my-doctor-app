@@ -32,7 +32,7 @@ const List = ({image, name, desc, type, onPress, icon}) => {
         <Icon />
       ) : (
         <Image
-          source={image.length > 1 ? image : IL_PhotoNull}
+          source={image.uri.length > 1 ? image : IL_PhotoNull}
           style={styles.imageDoctor}
         />
       )}

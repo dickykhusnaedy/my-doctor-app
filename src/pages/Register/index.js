@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {Button, Gap, Header, Input} from '../../components';
@@ -13,6 +13,7 @@ const Register = ({navigation}) => {
     email: '',
     password: '',
   });
+  const [errorInput, setErrorInput] = useState(true);
 
   const onContinue = () => {
     dispatch({type: 'SET_LOADING', value: true});
@@ -40,6 +41,7 @@ const Register = ({navigation}) => {
         navigation.navigate('UploadProfile', data);
       })
       .catch((error) => {
+        setErrorInput(error.message);
         dispatch({type: 'SET_LOADING', value: false});
         showError(error.message);
       });
@@ -73,6 +75,7 @@ const Register = ({navigation}) => {
             value={form.password}
             onChangeText={(value) => setForm('password', value)}
             secureTextEntry
+            error={errorInput}
           />
           <Gap height={40} />
           <Button title="Continue" onPress={onContinue} />

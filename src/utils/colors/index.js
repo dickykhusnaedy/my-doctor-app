@@ -29,6 +29,12 @@ export const colors = {
     menuActive: mainColors.green1,
     subTitle: mainColors.dark3,
   },
+  textInput: {
+    disable: {
+      text: mainColors.grey4,
+      background: mainColors.grey3,
+    },
+  },
   button: {
     primary: {
       text: 'white',

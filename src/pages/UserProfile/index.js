@@ -16,14 +16,16 @@ const UserProfile = ({navigation}) => {
   });
 
   useEffect(() => {
-    getDataUserFromLocal();
-  }, []);
+    navigation.addListener('focus', () => {
+      getDataUserFromLocal();
+    });
+  }, [navigation]);
 
   const getDataUserFromLocal = () => {
     getData('user').then((res) => {
       const data = res;
       data.photo = res.photo.length > 1 ? {uri: res.photo} : IL_PhotoNull;
-      setProfile(data);
+      setProfile(res);
     });
   };
 

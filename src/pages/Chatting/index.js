@@ -25,7 +25,6 @@ const Chatting = ({navigation, route}) => {
     Firebase.database()
       .ref(urlFirebase)
       .on('value', (snapshot) => {
-        console.log('data chat: ', snapshot.val());
         if (snapshot.val()) {
           const dataSnapshot = snapshot.val();
           const allChatData = [];
@@ -46,7 +45,6 @@ const Chatting = ({navigation, route}) => {
             });
           });
           setChatData(allChatData);
-          console.log('all data chat: ', allChatData);
         }
       });
   }, [dataDoctor.data.uid, user.uid]);
@@ -68,13 +66,31 @@ const Chatting = ({navigation, route}) => {
     };
 
     const chatId = `${user.uid}_${dataDoctor.data.uid}`;
-    const urlFirebase = `chatting/${chatId}/allChat/${setDateChat(today)}`;
+    const urlSaveDataChat = `chatting/${chatId}/allChat/${setDateChat(today)}`;
+
+    const urlMessageUser = `messages/${user.uid}/${chatId}`;
+    const urlMessageDoctor = `messages/${dataDoctor.data.uid}/${chatId}`;
+    const dataHistoryChatUser = {
+      lastContentChat: chatContent,
+      lastChatDate: today.getTime(today),
+      uidPartner: dataDoctor.data.uid,
+    };
+    const dataHistoryChatDoctor = {
+      lastContentChat: chatContent,
+      lastChatDate: today.getTime(today),
+      uidPartner: user.uid,
+    };
+
     // Send to firebase
     Firebase.database()
-      .ref(urlFirebase)
+      .ref(urlSaveDataChat)
       .push(data)
       .then(() => {
         setChatContent('');
+        // save data message user to firebase
+        Firebase.database().ref(urlMessageUser).set(dataHistoryChatUser);
+        // save data message doctor to firebase
+        Firebase.database().ref(urlMessageDoctor).set(dataHistoryChatDoctor);
       })
       .catch((error) => {
         showError(error.mesesage);
