@@ -3,6 +3,7 @@ import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {ChatItem, Header, InputChat} from '../../components';
 import {
   colors,
+  convertDate,
   fonts,
   getChatTime,
   getData,
@@ -10,6 +11,8 @@ import {
   showError,
 } from '../../utils';
 import {Firebase} from '../../config';
+import moment from 'moment';
+import 'moment/min/locales'; // import this if you will to change date locale
 
 const Chatting = ({navigation, route}) => {
   const dataDoctor = route.params;
@@ -57,7 +60,6 @@ const Chatting = ({navigation, route}) => {
 
   const chatSend = () => {
     const today = new Date();
-
     const data = {
       sendBy: user.uid,
       chatDate: today.getTime(),
@@ -109,9 +111,14 @@ const Chatting = ({navigation, route}) => {
       <View style={styles.chatScreen}>
         <ScrollView showsVerticalScrollIndicator={false}>
           {chatData.map((chat) => {
+            // convert date wtih function converDate from utils
+            let date = convertDate(chat.id);
+            // after that convert date with libary "momentjs" to get format date as same with design
+            moment.locale('id'); // for change date locale to indonesian
+            let dateConvert = moment(date).format('dddd, ' + 'DD MMMM YYYY');
             return (
               <View key={chat.id}>
-                <Text style={styles.textDate}>{chat.id}</Text>
+                <Text style={styles.textDate}>{dateConvert}</Text>
                 {chat.data.map((itemChat) => {
                   const isMe = itemChat.data.sendBy === user.uid;
                   return (
