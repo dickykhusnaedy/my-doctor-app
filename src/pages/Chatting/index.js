@@ -1,18 +1,17 @@
+import moment from 'moment';
+import 'moment/min/locales'; // import this if you will to change date locale
 import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {ChatItem, Header, InputChat} from '../../components';
+import {Firebase} from '../../config';
 import {
   colors,
-  convertDate,
   fonts,
   getChatTime,
   getData,
   setDateChat,
   showError,
 } from '../../utils';
-import {Firebase} from '../../config';
-import moment from 'moment';
-import 'moment/min/locales'; // import this if you will to change date locale
 
 const Chatting = ({navigation, route}) => {
   const dataDoctor = route.params;
@@ -24,6 +23,7 @@ const Chatting = ({navigation, route}) => {
     getDataUserFromLocal();
     const chatId = `${user.uid}_${dataDoctor.data.uid}`;
     const urlFirebase = `chatting/${chatId}/allChat/`;
+
     // get realtime data from firebase
     Firebase.database()
       .ref(urlFirebase)
@@ -52,6 +52,20 @@ const Chatting = ({navigation, route}) => {
       });
   }, [dataDoctor.data.uid, user.uid]);
 
+  useEffect(() => {
+    const today = new Date();
+    const chatId = `${user.uid}_${dataDoctor.data.uid}`;
+    const urlMessageUser = `messages/${user.uid}/${chatId}`;
+
+    if (chatData.length > 0) {
+      if (user.uid !== undefined || dataDoctor.data.uid !== undefined) {
+        Firebase.database()
+          .ref(urlMessageUser)
+          .update({read_at: setDateChat(today)});
+      }
+    }
+  }, [chatData, dataDoctor.data.uid, user.uid]);
+
   const getDataUserFromLocal = () => {
     getData('user').then((res) => {
       setUser(res);
@@ -69,9 +83,9 @@ const Chatting = ({navigation, route}) => {
 
     const chatId = `${user.uid}_${dataDoctor.data.uid}`;
     const urlSaveDataChat = `chatting/${chatId}/allChat/${setDateChat(today)}`;
-
     const urlMessageUser = `messages/${user.uid}/${chatId}`;
     const urlMessageDoctor = `messages/${dataDoctor.data.uid}/${chatId}`;
+
     const dataHistoryChatUser = {
       lastContentChat: chatContent,
       lastChatDate: today.getTime(today),
@@ -80,6 +94,7 @@ const Chatting = ({navigation, route}) => {
     const dataHistoryChatDoctor = {
       lastContentChat: chatContent,
       lastChatDate: today.getTime(today),
+      read_at: '',
       uidPartner: user.uid,
     };
 
@@ -109,13 +124,18 @@ const Chatting = ({navigation, route}) => {
         onPress={() => navigation.goBack()}
       />
       <View style={styles.chatScreen}>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          ref={(scroll) => {
+            this.scroll = scroll;
+          }}
+          onContentSizeChange={() => this.scroll.scrollToEnd({duration: 500})}>
           {chatData.map((chat) => {
-            // convert date wtih function converDate from utils
-            let date = convertDate(chat.id);
-            // after that convert date with libary "momentjs" to get format date as same with design
             moment.locale('id'); // for change date locale to indonesian
-            let dateConvert = moment(date).format('dddd, ' + 'DD MMMM YYYY');
+            // convert string date to date format using momentjs library
+            const dateConvert = moment(`${chat.id}`, 'YYYY-MM-DD').format(
+              'dddd, ' + 'DD MMMM YYYY',
+            );
             return (
               <View key={chat.id}>
                 <Text style={styles.textDate}>{dateConvert}</Text>

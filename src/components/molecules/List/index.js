@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {
   IconHelp,
@@ -10,7 +10,27 @@ import {
 } from '../../../assets';
 import {colors, fonts} from '../../../utils';
 
-const List = ({image, name, desc, type, onPress, icon}) => {
+const List = ({image, name, desc, type, onPress, icon, read, isMe}) => {
+  const [colorText, setColorText] = useState(colors.text.secondary);
+  const [fontText, setFontText] = useState(fonts.primary[300]);
+
+  useEffect(() => {
+    if (read !== undefined) {
+      if (read.length > 1) {
+        setColorText(colors.text.secondary);
+        setFontText(fonts.primary[300]);
+      } else if (read.length === 0) {
+        setColorText(colors.text.primary);
+        setFontText(fonts.primary[600]);
+      } else {
+        if (read === 'kirim' && isMe) {
+          setColorText(colors.text.secondary);
+          setFontText(fonts.primary[300]);
+        }
+      }
+    }
+  }, [read, isMe]);
+
   const Icon = () => {
     if (icon === 'edit-profile') {
       return <IconUser />;
@@ -26,6 +46,7 @@ const List = ({image, name, desc, type, onPress, icon}) => {
     }
     return <IconUser />;
   };
+
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       {icon ? (
@@ -38,7 +59,10 @@ const List = ({image, name, desc, type, onPress, icon}) => {
       )}
       <View style={styles.wrapperListChat}>
         <Text style={styles.nameDoctor}>{name}</Text>
-        <Text style={styles.desc}>{desc}</Text>
+        {read !== undefined && (
+          <Text style={styles.descReadAt(colorText, fontText)}>{desc}</Text>
+        )}
+        {read === undefined && <Text style={styles.desc}>{desc}</Text>}
       </View>
       {type === 'next' && <IconNext />}
     </TouchableOpacity>
@@ -76,4 +100,9 @@ const styles = StyleSheet.create({
     color: colors.text.secondary,
     fontFamily: fonts.primary[300],
   },
+  descReadAt: (colorText, fontText) => ({
+    fontSize: 12,
+    color: colorText,
+    fontFamily: fontText,
+  }),
 });

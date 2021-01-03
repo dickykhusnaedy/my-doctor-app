@@ -1,10 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {
-  DummyImageDocter1,
-  DummyImageDocter2,
-  DummyImageDocter3,
-} from '../../assets';
+import {IL_NotFound} from '../../assets';
 import {List} from '../../components';
 import {Firebase} from '../../config';
 import {colors, fonts, getData} from '../../utils';
@@ -48,6 +44,13 @@ const Messages = ({navigation}) => {
     <View style={styles.page}>
       <View style={styles.content}>
         <Text style={styles.title}>Messages</Text>
+        {historyChat.length === 0 && (
+          <>
+            <View style={styles.wrapperNotFound}>
+              <IL_NotFound />
+            </View>
+          </>
+        )}
         {historyChat.map((chat) => {
           const dataDoctor = {
             id: chat.detailDoctor.uid,
@@ -59,6 +62,8 @@ const Messages = ({navigation}) => {
               image={{uri: chat.detailDoctor.photo}}
               name={chat.detailDoctor.fullName}
               desc={chat.lastContentChat}
+              read={chat.read_at !== undefined ? chat.read_at : 'kirim'}
+              isMe={user.uid !== chat.uidPartner}
               onPress={() => navigation.navigate('Chatting', dataDoctor)}
             />
           );
@@ -74,6 +79,12 @@ const styles = StyleSheet.create({
   page: {
     flex: 1,
     backgroundColor: colors.secondary,
+  },
+  wrapperNotFound: {
+    flex: 1,
+    padding: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   content: {
     flex: 1,
