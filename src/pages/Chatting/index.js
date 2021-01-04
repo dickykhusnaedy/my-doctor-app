@@ -1,6 +1,6 @@
 import moment from 'moment';
 import 'moment/min/locales'; // import this if you will to change date locale
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {ChatItem, Header, InputChat} from '../../components';
 import {Firebase} from '../../config';
@@ -15,6 +15,7 @@ import {
 
 const Chatting = ({navigation, route}) => {
   const dataDoctor = route.params;
+  const scrollViewRef = useRef();
   const [chatContent, setChatContent] = useState('');
   const [user, setUser] = useState({});
   const [chatData, setChatData] = useState([]);
@@ -126,10 +127,10 @@ const Chatting = ({navigation, route}) => {
       <View style={styles.chatScreen}>
         <ScrollView
           showsVerticalScrollIndicator={false}
-          ref={(scroll) => {
-            this.scroll = scroll;
-          }}
-          onContentSizeChange={() => this.scroll.scrollToEnd({duration: 500})}>
+          ref={scrollViewRef}
+          onContentSizeChange={() =>
+            scrollViewRef.current.scrollToEnd({duration: 5000})
+          }>
           {chatData.map((chat) => {
             moment.locale('id'); // for change date locale to indonesian
             // convert string date to date format using momentjs library
