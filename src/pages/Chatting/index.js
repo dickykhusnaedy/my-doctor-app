@@ -129,7 +129,7 @@ const Chatting = ({navigation, route}) => {
           showsVerticalScrollIndicator={false}
           ref={scrollViewRef}
           onContentSizeChange={() =>
-            scrollViewRef.current.scrollToEnd({duration: 5000})
+            scrollViewRef.current.scrollToEnd({duration: 500, animted: true})
           }>
           {chatData.map((chat) => {
             moment.locale('id'); // for change date locale to indonesian
