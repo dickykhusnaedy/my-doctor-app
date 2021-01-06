@@ -1,4 +1,4 @@
-package com.mydoctorapp;
+package com.dickykhusnaedy.mydoctorapp;
 
 import com.facebook.react.ReactActivity;
 
