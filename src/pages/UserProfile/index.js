@@ -36,7 +36,7 @@ const UserProfile = ({navigation}) => {
       .then(() => {
         dispacth({type: 'SET_LOADING', value: false});
         showSuccess('Your sign out have been succesfully');
-        navigation.replace('GetStarted');
+        navigation.reset({index: 0, routes: [{name: 'GetStarted'}]});
       })
       .catch((error) => {
         dispacth({type: 'SET_LOADING', value: false});
