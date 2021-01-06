@@ -51,6 +51,7 @@ const Register = ({navigation}) => {
     <>
       <StatusBar backgroundColor={colors.white} barStyle={'dark-content'} />
       <View style={styles.page}>
+        <Gap height={20} />
         <Header title="Daftar Akun" onPress={() => navigation.goBack()} />
         <View style={styles.content}>
           <ScrollView showsVerticalScrollIndicator={false}>
