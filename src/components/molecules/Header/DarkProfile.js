@@ -6,7 +6,7 @@ import {Button} from '../../atom';
 
 const DarkProfile = ({onPress, title, desc, photo}) => {
   const trimText = (doctorName) => {
-    const maxLength = 30;
+    const maxLength = 25;
     if (doctorName.length > maxLength) {
       return doctorName.substring(0, maxLength).trimEnd() + '...';
     } else {
@@ -33,8 +33,8 @@ export default DarkProfile;
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 20,
     paddingHorizontal: 16,
+    paddingVertical: 30,
     alignItems: 'center',
     flexDirection: 'row',
     borderBottomLeftRadius: 20,
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   },
   content: {flex: 1},
   doctorName: {
-    fontSize: 16,
+    fontSize: 20,
     textAlign: 'center',
     color: colors.white,
     fontFamily: fonts.primary[600],

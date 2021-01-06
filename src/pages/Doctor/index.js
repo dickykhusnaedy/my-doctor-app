@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StatusBar, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, StatusBar} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {IL_PhotoNull} from '../../assets';
 import {
@@ -7,16 +7,14 @@ import {
   Gap,
   GoodNews,
   HomeProfile,
-  LoadingSkeleton,
   RatedDoctor,
 } from '../../components';
 import {Firebase} from '../../config';
 import {colors, fonts, getData, showError} from '../../utils';
 
 const Doctor = ({navigation}) => {
-  const [loadingData, setLoadingData] = useState(false);
   const [news, setNews] = useState([]);
-  const [categoryDoctor, setCategoryDoctor] = useState([]);
+  const [categoryDocter, setCategoryDocter] = useState([]);
   const [doctors, setDoctor] = useState([]);
   const [profile, setProfile] = useState({
     photo: IL_PhotoNull,
@@ -40,10 +38,9 @@ const Doctor = ({navigation}) => {
       .once('value')
       .then((res) => {
         if (res.val()) {
-          setLoadingData(true);
           const data = res.val();
           const filterData = data.filter((el) => el !== null);
-          setCategoryDoctor(filterData);
+          setCategoryDocter(filterData);
         }
       })
       .catch((error) => {
@@ -60,7 +57,6 @@ const Doctor = ({navigation}) => {
       .once('value')
       .then((res) => {
         if (res.val()) {
-          setLoadingData(true);
           const oldData = res.val();
           const data = [];
 
@@ -85,7 +81,6 @@ const Doctor = ({navigation}) => {
       .once('value')
       .then((res) => {
         if (res.val()) {
-          setLoadingData(true);
           const data = res.val();
           const filterData = data.filter((el) => el !== null);
           setNews(filterData);
@@ -125,63 +120,46 @@ const Doctor = ({navigation}) => {
               <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                 <View style={styles.doctorWrapper}>
                   <Gap width={32} />
-                  {!loadingData && <LoadingSkeleton />}
-                  {loadingData && (
-                    <>
-                      {categoryDoctor.map((item) => {
-                        return (
-                          <DoctorCategory
-                            key={item.id}
-                            category={item.category}
-                            onPress={() =>
-                              navigation.navigate('ChooseDoctor', item)
-                            }
-                          />
-                        );
-                      })}
-                    </>
-                  )}
+                  {categoryDocter.map((item) => {
+                    return (
+                      <DoctorCategory
+                        key={item.id}
+                        category={item.category}
+                        onPress={() =>
+                          navigation.navigate('ChooseDoctor', item)
+                        }
+                      />
+                    );
+                  })}
                   <Gap width={22} />
                 </View>
               </ScrollView>
             </View>
             <View style={styles.wrapperSection}>
               <Text style={styles.labelName}>Top Rated Doctors</Text>
-              {!loadingData && <LoadingSkeleton type="loading-list" />}
-              {loadingData && (
-                <>
-                  {doctors.map((doctor) => {
-                    return (
-                      <RatedDoctor
-                        key={doctor.id}
-                        avatar={{uri: doctor.data.photo}}
-                        name={doctor.data.fullName}
-                        desc={doctor.data.profession}
-                        onPress={() =>
-                          navigation.navigate('DoctorProfile', doctor)
-                        }
-                      />
-                    );
-                  })}
-                </>
-              )}
+              {doctors.map((doctor) => {
+                return (
+                  <RatedDoctor
+                    key={doctor.id}
+                    avatar={{uri: doctor.data.photo}}
+                    name={doctor.data.fullName}
+                    desc={doctor.data.profession}
+                    onPress={() => navigation.navigate('DoctorProfile', doctor)}
+                  />
+                );
+              })}
               <Text style={styles.labelName}>Good News</Text>
-              {!loadingData && <LoadingSkeleton />}
             </View>
-            {loadingData && (
-              <>
-                {news.map((item) => {
-                  return (
-                    <GoodNews
-                      key={item.id}
-                      title={item.title}
-                      date={item.date}
-                      image={item.image}
-                    />
-                  );
-                })}
-              </>
-            )}
+            {news.map((item) => {
+              return (
+                <GoodNews
+                  key={item.id}
+                  title={item.title}
+                  date={item.date}
+                  image={item.image}
+                />
+              );
+            })}
             <Gap height={30} />
           </ScrollView>
         </View>

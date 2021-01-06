@@ -118,7 +118,8 @@ const Chatting = ({navigation, route}) => {
   return (
     <>
       <StatusBar
-        backgroundColor={colors.secondary}
+        translucent
+        backgroundColor="transparent"
         barStyle={'light-content'}
       />
       <View style={styles.page}>

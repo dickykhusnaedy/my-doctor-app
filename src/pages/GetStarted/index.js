@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    marginTop: 70,
+    marginTop: 91,
     color: colors.white,
     fontFamily: fonts.primary[600],
   },
