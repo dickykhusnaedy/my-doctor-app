@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, StatusBar, ScrollView} from 'react-native';
 import {Header, List} from '../../components';
 import {Firebase} from '../../config';
 import {colors} from '../../utils';
@@ -30,28 +30,37 @@ const ChoooseDoctor = ({navigation, route}) => {
 
   useEffect(() => {
     callDoctorByCategory(itemCategory.category);
-  }, []);
+  }, [itemCategory.category]);
 
   return (
-    <View style={styles.container}>
-      <Header
-        type="dark"
-        title={`Pilih ${itemCategory.category}`}
-        onPress={() => navigation.goBack()}
+    <>
+      <StatusBar
+        translucent
+        backgroundColor="transparent"
+        barStyle={'light-content'}
       />
-      {listDoctor.map((item) => {
-        return (
-          <List
-            key={item.id}
-            type="dark"
-            image={{uri: item.data.photo}}
-            name={item.data.fullName}
-            desc={item.data.gender}
-            onPress={() => navigation.push('DoctorProfile', item)}
-          />
-        );
-      })}
-    </View>
+      <View style={styles.container}>
+        <Header
+          type="dark"
+          title={`Pilih ${itemCategory.category}`}
+          onPress={() => navigation.goBack()}
+        />
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {listDoctor.map((item) => {
+            return (
+              <List
+                key={item.id}
+                type="dark"
+                image={{uri: item.data.photo}}
+                name={item.data.fullName}
+                desc={item.data.gender}
+                onPress={() => navigation.push('DoctorProfile', item)}
+              />
+            );
+          })}
+        </ScrollView>
+      </View>
+    </>
   );
 };
 

@@ -1,7 +1,7 @@
 import moment from 'moment';
 import 'moment/min/locales'; // import this if you will to change date locale
 import React, {useEffect, useRef, useState} from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, View, StatusBar} from 'react-native';
 import {ChatItem, Header, InputChat} from '../../components';
 import {Firebase} from '../../config';
 import {
@@ -116,54 +116,61 @@ const Chatting = ({navigation, route}) => {
   };
 
   return (
-    <View style={styles.page}>
-      <Header
-        type="dark-profile"
-        title={dataDoctor.data.fullName}
-        desc={dataDoctor.data.category}
-        photo={{uri: dataDoctor.data.photo}}
-        onPress={() => navigation.goBack()}
+    <>
+      <StatusBar
+        translucent
+        backgroundColor="transparent"
+        barStyle={'light-content'}
       />
-      <View style={styles.chatScreen}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          ref={scrollViewRef}
-          onContentSizeChange={() =>
-            scrollViewRef.current.scrollToEnd({duration: 500, animted: true})
-          }>
-          {chatData.map((chat) => {
-            moment.locale('id'); // for change date locale to indonesian
-            // convert string date to date format using momentjs library
-            const dateConvert = moment(`${chat.id}`, 'YYYY-MM-DD').format(
-              'dddd, ' + 'DD MMMM YYYY',
-            );
-            return (
-              <View key={chat.id}>
-                <Text style={styles.textDate}>{dateConvert}</Text>
-                {chat.data.map((itemChat) => {
-                  const isMe = itemChat.data.sendBy === user.uid;
-                  return (
-                    <ChatItem
-                      key={itemChat.id}
-                      isMe={isMe}
-                      text={itemChat.data.chatContent}
-                      date={itemChat.data.chatTime}
-                      photo={isMe ? null : {uri: dataDoctor.data.photo}}
-                    />
-                  );
-                })}
-              </View>
-            );
-          })}
-        </ScrollView>
+      <View style={styles.page}>
+        <Header
+          type="dark-profile"
+          title={dataDoctor.data.fullName}
+          desc={dataDoctor.data.category}
+          photo={{uri: dataDoctor.data.photo}}
+          onPress={() => navigation.goBack()}
+        />
+        <View style={styles.chatScreen}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            ref={scrollViewRef}
+            onContentSizeChange={() =>
+              scrollViewRef.current.scrollToEnd({duration: 500, animted: true})
+            }>
+            {chatData.map((chat) => {
+              moment.locale('id'); // for change date locale to indonesian
+              // convert string date to date format using momentjs library
+              const dateConvert = moment(`${chat.id}`, 'YYYY-MM-DD').format(
+                'dddd, ' + 'DD MMMM YYYY',
+              );
+              return (
+                <View key={chat.id}>
+                  <Text style={styles.textDate}>{dateConvert}</Text>
+                  {chat.data.map((itemChat) => {
+                    const isMe = itemChat.data.sendBy === user.uid;
+                    return (
+                      <ChatItem
+                        key={itemChat.id}
+                        isMe={isMe}
+                        text={itemChat.data.chatContent}
+                        date={itemChat.data.chatTime}
+                        photo={isMe ? null : {uri: dataDoctor.data.photo}}
+                      />
+                    );
+                  })}
+                </View>
+              );
+            })}
+          </ScrollView>
+        </View>
+        <InputChat
+          fullName={dataDoctor.data.fullName}
+          value={chatContent}
+          onChangeText={(value) => setChatContent(value)}
+          onPress={chatSend}
+        />
       </View>
-      <InputChat
-        fullName={dataDoctor.data.fullName}
-        value={chatContent}
-        onChangeText={(value) => setChatContent(value)}
-        onPress={chatSend}
-      />
-    </View>
+    </>
   );
 };
 

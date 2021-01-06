@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, View, StatusBar} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {IL_Logo} from '../../assets';
 import {Button, Gap, Input, Link} from '../../components';
@@ -44,37 +44,40 @@ const Login = ({navigation}) => {
   };
 
   return (
-    <View style={styles.page}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Gap height={40} />
-        <IL_Logo />
-        <Text style={styles.title}>Masuk dan mulai berkonsultasi</Text>
-        <Input
-          label="Email Address"
-          value={form.email}
-          onChangeText={(value) => setForm('email', value)}
-        />
-        <Gap height={24} />
-        <Input
-          label="Password"
-          value={form.password}
-          onChangeText={(value) => setForm('password', value)}
-          secureTextEntry
-          error={errorInput}
-        />
-        <Gap height={10} />
-        <Link title="Forgot My Password" size={12} />
-        <Gap height={40} />
-        <Button title="Sign In" onPress={login} />
-        <Gap height={30} />
-        <Link
-          title="Create New Account"
-          size={16}
-          align="center"
-          onPress={() => navigation.navigate('Register')}
-        />
-      </ScrollView>
-    </View>
+    <>
+      <StatusBar backgroundColor={colors.white} barStyle={'dark-content'} />
+      <View style={styles.page}>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Gap height={40} />
+          <IL_Logo />
+          <Text style={styles.title}>Masuk dan mulai berkonsultasi</Text>
+          <Input
+            label="Email Address"
+            value={form.email}
+            onChangeText={(value) => setForm('email', value)}
+          />
+          <Gap height={24} />
+          <Input
+            label="Password"
+            value={form.password}
+            onChangeText={(value) => setForm('password', value)}
+            secureTextEntry
+            error={errorInput}
+          />
+          <Gap height={10} />
+          <Link title="Forgot My Password" size={12} />
+          <Gap height={40} />
+          <Button title="Sign In" onPress={login} />
+          <Gap height={30} />
+          <Link
+            title="Create New Account"
+            size={16}
+            align="center"
+            onPress={() => navigation.navigate('Register')}
+          />
+        </ScrollView>
+      </View>
+    </>
   );
 };
 

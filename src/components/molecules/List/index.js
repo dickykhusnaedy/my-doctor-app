@@ -14,6 +14,16 @@ const List = ({image, name, desc, type, onPress, icon, read, isMe}) => {
   const [colorText, setColorText] = useState(colors.text.secondary);
   const [fontText, setFontText] = useState(fonts.primary[300]);
 
+  // this function for trim text
+  const trimText = (text) => {
+    let maxLength = 100;
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength).trimEnd() + ' ...';
+    } else {
+      return text;
+    }
+  };
+
   useEffect(() => {
     if (read !== undefined) {
       if (read.length > 1) {
@@ -60,9 +70,13 @@ const List = ({image, name, desc, type, onPress, icon, read, isMe}) => {
       <View style={styles.wrapperListChat}>
         <Text style={styles.nameDoctor}>{name}</Text>
         {read !== undefined && (
-          <Text style={styles.descReadAt(colorText, fontText)}>{desc}</Text>
+          <Text style={styles.descReadAt(colorText, fontText)}>
+            {trimText(desc)}
+          </Text>
         )}
-        {read === undefined && <Text style={styles.desc}>{desc}</Text>}
+        {read === undefined && (
+          <Text style={styles.desc}>{trimText(desc)}</Text>
+        )}
       </View>
       {type === 'next' && <IconNext />}
     </TouchableOpacity>

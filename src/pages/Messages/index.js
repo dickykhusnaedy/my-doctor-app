@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {IL_NotFound} from '../../assets';
 import {List} from '../../components';
 import {Firebase} from '../../config';
@@ -51,23 +51,25 @@ const Messages = ({navigation}) => {
             </View>
           </>
         )}
-        {historyChat.map((chat) => {
-          const dataDoctor = {
-            id: chat.detailDoctor.uid,
-            data: chat.detailDoctor,
-          };
-          return (
-            <List
-              key={chat.id}
-              image={{uri: chat.detailDoctor.photo}}
-              name={chat.detailDoctor.fullName}
-              desc={chat.lastContentChat}
-              read={chat.read_at !== undefined ? chat.read_at : 'kirim'}
-              isMe={user.uid !== chat.uidPartner}
-              onPress={() => navigation.navigate('Chatting', dataDoctor)}
-            />
-          );
-        })}
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {historyChat.map((chat) => {
+            const dataDoctor = {
+              id: chat.detailDoctor.uid,
+              data: chat.detailDoctor,
+            };
+            return (
+              <List
+                key={chat.id}
+                image={{uri: chat.detailDoctor.photo}}
+                name={chat.detailDoctor.fullName}
+                desc={chat.lastContentChat}
+                read={chat.read_at !== undefined ? chat.read_at : 'kirim'}
+                isMe={user.uid !== chat.uidPartner}
+                onPress={() => navigation.navigate('Chatting', dataDoctor)}
+              />
+            );
+          })}
+        </ScrollView>
       </View>
     </View>
   );

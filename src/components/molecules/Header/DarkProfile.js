@@ -5,11 +5,20 @@ import {colors, fonts} from '../../../utils';
 import {Button} from '../../atom';
 
 const DarkProfile = ({onPress, title, desc, photo}) => {
+  const trimText = (doctorName) => {
+    const maxLength = 25;
+    if (doctorName.length > maxLength) {
+      return doctorName.substring(0, maxLength).trimEnd() + '...';
+    } else {
+      return doctorName;
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Button type="icon-only" icon="back-light" onPress={onPress} />
       <View style={styles.content}>
-        <Text style={styles.doctorName}>{title}</Text>
+        <Text style={styles.doctorName}>{trimText(title)}</Text>
         <Text style={styles.doctorCategory}>{desc}</Text>
       </View>
       <Image
