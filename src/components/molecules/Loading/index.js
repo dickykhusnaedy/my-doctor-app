@@ -1,13 +1,22 @@
 import React from 'react';
-import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
+import {
+  ActivityIndicator,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import {colors, fonts} from '../../../utils';
 
 const Loading = () => {
   return (
-    <View style={styles.wrapper}>
-      <ActivityIndicator size={60} color={colors.primary} />
-      <Text style={styles.text}>Loading ...</Text>
-    </View>
+    <>
+      <StatusBar backgroundColor={colors.primary} barStyle={'light-content'} />
+      <View style={styles.wrapper}>
+        <ActivityIndicator size={60} color={colors.primary} />
+        <Text style={styles.text}>Loading ...</Text>
+      </View>
+    </>
   );
 };
 
