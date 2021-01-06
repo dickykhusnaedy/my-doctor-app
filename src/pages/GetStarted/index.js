@@ -41,11 +41,12 @@ export default GetStarted;
 const styles = StyleSheet.create({
   page: {
     padding: 40,
+    paddingTop: 60,
     justifyContent: 'space-between',
     flex: 1,
   },
   title: {
-    fontSize: 35,
+    fontSize: 30,
     marginTop: 91,
     color: colors.white,
     fontFamily: fonts.primary[600],
