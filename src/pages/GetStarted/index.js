@@ -13,6 +13,7 @@ const GetStarted = ({navigation}) => {
         barStyle={'light-content'}
       />
       <ImageBackground source={IL_GetStarted} style={styles.page}>
+        <View style={styles.overlay} />
         <View>
           <IL_Logo />
           <Text style={styles.title}>
@@ -40,14 +41,21 @@ export default GetStarted;
 
 const styles = StyleSheet.create({
   page: {
+    flex: 1,
     padding: 40,
     paddingTop: 60,
     justifyContent: 'space-between',
-    flex: 1,
+  },
+  overlay: {
+    opacity: 0.7,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.black,
+    ...StyleSheet.absoluteFillObject,
   },
   title: {
     fontSize: 30,
-    marginTop: 91,
+    marginTop: 70,
     color: colors.white,
     fontFamily: fonts.primary[600],
   },

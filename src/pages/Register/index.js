@@ -55,6 +55,7 @@ const Register = ({navigation}) => {
         <Header title="Daftar Akun" onPress={() => navigation.goBack()} />
         <View style={styles.content}>
           <ScrollView showsVerticalScrollIndicator={false}>
+            <Gap height={20} />
             <Input
               label="Full Name"
               value={form.fullName}
