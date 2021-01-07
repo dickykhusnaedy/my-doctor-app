@@ -27,7 +27,8 @@ export default Header;
 
 const styles = StyleSheet.create({
   container: (type) => ({
-    paddingVertical: 20,
+    paddingTop: 16,
+    paddingBottom: 20,
     paddingHorizontal: 20,
     flexDirection: 'row',
     alignItems: 'center',
@@ -36,8 +37,8 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: type === 'dark' ? 20 : 0,
   }),
   titleHeader: (type) => ({
-    fontSize: 20,
     flex: 1,
+    fontSize: 20,
     textTransform: 'capitalize',
     textAlign: 'center',
     color: type === 'dark' ? colors.white : colors.text.primary,

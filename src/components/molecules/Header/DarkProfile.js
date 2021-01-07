@@ -33,8 +33,8 @@ export default DarkProfile;
 
 const styles = StyleSheet.create({
   container: {
+    paddingVertical: 20,
     paddingHorizontal: 16,
-    paddingVertical: 30,
     alignItems: 'center',
     flexDirection: 'row',
     borderBottomLeftRadius: 20,
@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
   },
   content: {flex: 1},
   doctorName: {
-    fontSize: 20,
+    fontSize: 18,
     textAlign: 'center',
     color: colors.white,
     fontFamily: fonts.primary[600],
