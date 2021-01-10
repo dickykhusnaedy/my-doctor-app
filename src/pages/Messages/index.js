@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {ScrollView, StatusBar, StyleSheet, Text, View} from 'react-native';
 import {IL_NotFound} from '../../assets';
-import {List} from '../../components';
+import {Gap, List} from '../../components';
 import {Firebase} from '../../config';
 import {colors, fonts, getData} from '../../utils';
 
@@ -41,37 +41,42 @@ const Messages = ({navigation}) => {
   }, [user.uid]);
 
   return (
-    <View style={styles.page}>
-      <View style={styles.content}>
-        <Text style={styles.title}>Messages</Text>
-        {historyChat.length === 0 && (
-          <>
+    <>
+      <StatusBar backgroundColor={colors.white} barStyle={'dark-content'} />
+      <View style={styles.page}>
+        <View style={styles.content}>
+          <Gap height={20} />
+          <Text style={styles.title}>Messages</Text>
+          {historyChat.length === 0 ? (
             <View style={styles.wrapperNotFound}>
-              <IL_NotFound />
+              <IL_NotFound style={styles.iconNotFound} />
+              <Text style={styles.textNotFound}>Belum ada chat nih...</Text>
             </View>
-          </>
-        )}
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {historyChat.map((chat) => {
-            const dataDoctor = {
-              id: chat.detailDoctor.uid,
-              data: chat.detailDoctor,
-            };
-            return (
-              <List
-                key={chat.id}
-                image={{uri: chat.detailDoctor.photo}}
-                name={chat.detailDoctor.fullName}
-                desc={chat.lastContentChat}
-                read={chat.read_at !== undefined ? chat.read_at : 'kirim'}
-                isMe={user.uid !== chat.uidPartner}
-                onPress={() => navigation.navigate('Chatting', dataDoctor)}
-              />
-            );
-          })}
-        </ScrollView>
+          ) : (
+            <ScrollView showsVerticalScrollIndicator={false}>
+              {historyChat.map((chat) => {
+                const dataDoctor = {
+                  id:
+                    chat.detailDoctor.uid !== null ? chat.detailDoctor.uid : '',
+                  data: chat.detailDoctor,
+                };
+                return (
+                  <List
+                    key={chat.id}
+                    image={{uri: chat.detailDoctor.photo}}
+                    name={chat.detailDoctor.fullName}
+                    desc={chat.lastContentChat}
+                    read={chat.read_at !== undefined ? chat.read_at : 'kirim'}
+                    isMe={user.uid !== chat.uidPartner}
+                    onPress={() => navigation.navigate('Chatting', dataDoctor)}
+                  />
+                );
+              })}
+            </ScrollView>
+          )}
+        </View>
       </View>
-    </View>
+    </>
   );
 };
 
@@ -84,9 +89,19 @@ const styles = StyleSheet.create({
   },
   wrapperNotFound: {
     flex: 1,
-    padding: 20,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  iconNotFound: {
+    width: 250,
+    height: 250,
+    color: colors.primary,
+  },
+  textNotFound: {
+    fontSize: 16,
+    marginTop: -25,
+    color: colors.text.primary,
+    fontFamily: fonts.primary[600],
   },
   content: {
     flex: 1,
@@ -98,7 +113,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: colors.text.primary,
     fontFamily: fonts.primary[600],
-    marginTop: 16,
     marginLeft: 16,
   },
 });

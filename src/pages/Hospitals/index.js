@@ -1,47 +1,91 @@
 import React, {useEffect, useState} from 'react';
-import {ImageBackground, StyleSheet, Text, View} from 'react-native';
+import {
+  ImageBackground,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  RefreshControl,
+  Text,
+  View,
+} from 'react-native';
 import {IL_ImageBG} from '../../assets';
-import {ListHospitals} from '../../components/molecules';
+import {ListHospitals, Gap} from '../../components';
 import {Firebase} from '../../config';
 import {colors, fonts, showError} from '../../utils';
 
 const Hospitals = () => {
   const [hospital, setHospital] = useState([]);
+  const [loadData, setLoadData] = useState(false);
+  const [refreshing, setRefreshing] = React.useState(false);
 
-  useEffect(() => {
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    getDataHospital();
+  }, []);
+
+  const getDataHospital = () => {
     Firebase.database()
       .ref('hospital/')
       .once('value')
       .then((success) => {
         if (success.val()) {
-          setHospital(success.val());
+          setLoadData(true);
+          const oldData = success.val();
+          const data = [];
+
+          Object.keys(oldData).map((key) => {
+            data.push(oldData[key]);
+          });
+          setRefreshing(false);
+          setHospital(data);
         }
       })
       .catch((error) => {
         showError(error.message);
       });
+  };
+
+  useEffect(() => {
+    getDataHospital();
   }, []);
 
   return (
-    <View style={styles.page}>
-      <ImageBackground source={IL_ImageBG} style={styles.backgroud}>
-        <Text style={styles.title}>Nearby Hospitals</Text>
-        <Text style={styles.subTitle}>3 tersedia</Text>
-      </ImageBackground>
-      <View style={styles.content}>
-        {hospital.map((item) => {
-          return (
-            <ListHospitals
-              key={item.id}
-              image={item.image}
-              type={item.type}
-              name={item.name}
-              address={item.address}
-            />
-          );
-        })}
+    <>
+      <StatusBar backgroundColor={colors.white} barStyle={'dark-content'} />
+      <View style={styles.page}>
+        <ImageBackground source={IL_ImageBG} style={styles.backgroud}>
+          <Text style={styles.title}>Nearby Hospitals</Text>
+          <Text style={styles.subTitle}>{hospital.length} Hospital</Text>
+        </ImageBackground>
+        <View style={styles.content}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                colors={[colors.primary]}
+              />
+            }>
+            <Gap height={14} />
+            {/* <LoadingSkeleton type="loading-image" /> */}
+            {hospital.map((item) => {
+              return (
+                <ListHospitals
+                  key={item.id}
+                  image={item.image}
+                  type={item.type}
+                  name={item.name}
+                  load={loadData}
+                  address={item.address}
+                />
+              );
+            })}
+            <Gap height={14} />
+          </ScrollView>
+        </View>
       </View>
-    </View>
+    </>
   );
 };
 
@@ -56,7 +100,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     textAlign: 'center',
-    marginTop: 30,
+    marginTop: 50,
     color: colors.white,
     fontFamily: fonts.primary[600],
   },
@@ -72,6 +116,5 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderRadius: 20,
     marginTop: -30,
-    paddingTop: 14,
   },
 });

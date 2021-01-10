@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {ScrollView, StatusBar, StyleSheet, View} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {IL_PhotoNull} from '../../assets';
 import {Gap} from '../../components/atom';
@@ -45,47 +45,50 @@ const UserProfile = ({navigation}) => {
   };
 
   return (
-    <View style={styles.page}>
-      <Header title="Profile" onPress={() => navigation.goBack()} />
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Gap height={20} />
-        {profile.fullName.length > 0 && (
-          <Profile
-            photo={profile.photo}
-            name={profile.fullName}
-            desc={profile.profession}
+    <>
+      <StatusBar backgroundColor={colors.white} barStyle={'dark-content'} />
+      <View style={styles.page}>
+        <Header title="Profile" onPress={() => navigation.goBack()} />
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Gap height={20} />
+          {profile.fullName.length > 0 && (
+            <Profile
+              photo={profile.photo}
+              name={profile.fullName}
+              desc={profile.profession}
+            />
+          )}
+          <Gap height={14} />
+          <List
+            name="Edit Profile"
+            desc="Last updated yesterday"
+            type="next"
+            icon="edit-profile"
+            onPress={() => navigation.navigate('EditProfile')}
           />
-        )}
-        <Gap height={14} />
-        <List
-          name="Edit Profile"
-          desc="Last updated yesterday"
-          type="next"
-          icon="edit-profile"
-          onPress={() => navigation.navigate('EditProfile')}
-        />
-        <List
-          name="Language"
-          desc="Available 12 languages"
-          type="next"
-          icon="language"
-        />
-        <List
-          name="Give Us Rate"
-          desc="On Google Play Store"
-          type="next"
-          icon="rate"
-        />
-        <List
-          name="Sign Out"
-          desc="Read our guidelines"
-          type="next"
-          icon="help"
-          onPress={signOut}
-        />
-        <Gap height={20} />
-      </ScrollView>
-    </View>
+          <List
+            name="Language"
+            desc="Available 12 languages"
+            type="next"
+            icon="language"
+          />
+          <List
+            name="Give Us Rate"
+            desc="On Google Play Store"
+            type="next"
+            icon="rate"
+          />
+          <List
+            name="Sign Out"
+            desc="Read our guidelines"
+            type="next"
+            icon="help"
+            onPress={signOut}
+          />
+          <Gap height={20} />
+        </ScrollView>
+      </View>
+    </>
   );
 };
 

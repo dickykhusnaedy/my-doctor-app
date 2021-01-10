@@ -6,7 +6,7 @@ const ListHospitals = ({image, type, name, address}) => {
   return (
     <View style={styles.container}>
       <Image source={{uri: image}} style={styles.image} />
-      <View>
+      <View style={styles.wrapper}>
         <Text style={styles.hospitalName}>{type}</Text>
         <Text style={styles.hospitalName}>{name}</Text>
         <Text style={styles.hospitalAddress}>{address}</Text>
@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.border,
     alignItems: 'center',
   },
+  wrapper: {flex: 1},
   image: {
     width: 80,
     height: 60,

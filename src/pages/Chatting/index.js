@@ -133,9 +133,7 @@ const Chatting = ({navigation, route}) => {
           <ScrollView
             showsVerticalScrollIndicator={false}
             ref={scrollViewRef}
-            onContentSizeChange={() =>
-              scrollViewRef.current.scrollToEnd({duration: 500, animted: true})
-            }>
+            onContentSizeChange={() => scrollViewRef.current.scrollToEnd()}>
             {chatData.map((chat) => {
               moment.locale('id'); // for change date locale to indonesian
               // convert string date to date format using momentjs library

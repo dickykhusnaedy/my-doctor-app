@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View, StatusBar, ScrollView} from 'react-native';
-import {Header, List} from '../../components';
+import {Header, List, LoadingSkeleton} from '../../components';
 import {Firebase} from '../../config';
 import {colors} from '../../utils';
 
 const ChoooseDoctor = ({navigation, route}) => {
   const itemCategory = route.params;
+  const [loadingData, setLoadingData] = useState(false);
   const [listDoctor, setListDoctor] = useState([]);
 
   const callDoctorByCategory = (category) => {
@@ -15,6 +16,7 @@ const ChoooseDoctor = ({navigation, route}) => {
       .equalTo(category) // for sort data relate with orderByChild
       .once('value')
       .then((res) => {
+        setLoadingData(true);
         const oldData = res.val();
         const data = [];
         // for parse or convert object data to object array data
@@ -45,18 +47,24 @@ const ChoooseDoctor = ({navigation, route}) => {
           onPress={() => navigation.goBack()}
         />
         <ScrollView showsVerticalScrollIndicator={false}>
-          {listDoctor.map((item) => {
-            return (
-              <List
-                key={item.id}
-                type="dark"
-                image={{uri: item.data.photo}}
-                name={item.data.fullName}
-                desc={item.data.gender}
-                onPress={() => navigation.push('DoctorProfile', item)}
-              />
-            );
-          })}
+          {!loadingData || listDoctor.length === 0 ? (
+            <LoadingSkeleton type="loading-list-data" />
+          ) : (
+            <>
+              {listDoctor.map((item) => {
+                return (
+                  <List
+                    key={item.id}
+                    type="dark"
+                    image={{uri: item.data.photo}}
+                    name={item.data.fullName}
+                    desc={item.data.gender}
+                    onPress={() => navigation.push('DoctorProfile', item)}
+                  />
+                );
+              })}
+            </>
+          )}
         </ScrollView>
       </View>
     </>
